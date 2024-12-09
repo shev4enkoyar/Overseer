@@ -12,7 +12,7 @@ var database = builder.AddPostgres("overseer-postgresql", databaseUsername,
 var cache = builder.AddRedis("overseer-redis-cache")
     .WithLifetime(ContainerLifetime.Persistent);
 
-var apiService = builder.AddProject<Projects.Overseer_ApiService>("web-api");
+var apiService = builder.AddProject<Projects.Overseer_WebAPI>("web-api");
 
 builder.AddProject<Projects.Overseer_Web>("frontend")
     .WithExternalHttpEndpoints()

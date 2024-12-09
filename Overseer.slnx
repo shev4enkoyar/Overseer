@@ -4,9 +4,9 @@
     <File Path=".gitignore" />
   </Folder>
   <Folder Name="/src/">
-    <Project Path="src\Overseer.ApiService\Overseer.ApiService.csproj" />
     <Project Path="src\Overseer.AppHost\Overseer.AppHost.csproj" />
     <Project Path="src\Overseer.ServiceDefaults\Overseer.ServiceDefaults.csproj" />
+    <Project Path="src\Overseer.WebAPI\Overseer.WebAPI.csproj" />
     <Project Path="src\Overseer.Web\Overseer.Web.csproj" />
   </Folder>
 </Solution>

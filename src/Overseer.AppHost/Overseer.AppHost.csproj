@@ -12,7 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Overseer.ApiService\Overseer.ApiService.csproj" />
+    <ProjectReference Include="..\Overseer.WebAPI\Overseer.WebAPI.csproj" />
     <ProjectReference Include="..\Overseer.Web\Overseer.Web.csproj" />
   </ItemGroup>
 
