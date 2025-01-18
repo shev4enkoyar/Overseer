@@ -1,6 +1,7 @@
 ﻿<Solution>
   <Folder Name="/solution items/">
     <File Path="README.md" />
+    <File Path="LICENSE" />
   </Folder>
   <Folder Name="/src/">
     <Project Path="src\Overseer.AppHost\Overseer.AppHost.csproj" Type="Classic C#" />
