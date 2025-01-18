@@ -1,3 +1,5 @@
+using Overseer.AppHost.Extensions;
+
 var builder = DistributedApplication.CreateBuilder(args);
 
 var databaseUsername = builder.AddParameter("DatabaseUsername", secret: true);
@@ -13,14 +15,11 @@ var cache = builder.AddRedis("overseer-redis-cache")
     .WithLifetime(ContainerLifetime.Persistent);
 
 var apiService = builder.AddProject<Projects.Overseer_WebAPI>("overseer-web-api")
-    .WithReference(database)
-    .WaitFor(database);
+    .WithWaitingReference(database);
 
 builder.AddProject<Projects.Overseer_WebUI>("overseer-web-ui")
     .WithExternalHttpEndpoints()
-    .WithReference(cache)
-    .WaitFor(cache)
-    .WithReference(apiService)
-    .WaitFor(apiService);
+    .WithWaitingReference(cache)
+    .WithWaitingReference(apiService);
 
 builder.Build().Run();
