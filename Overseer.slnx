@@ -1,4 +1,7 @@
 ﻿<Solution>
+  <Folder Name="/solution items/">
+    <File Path="README.md" />
+  </Folder>
   <Folder Name="/src/">
     <Project Path="src\Overseer.AppHost\Overseer.AppHost.csproj" Type="Classic C#" />
     <Project Path="src\Overseer.ServiceDefaults\Overseer.ServiceDefaults.csproj" Type="Classic C#" />
