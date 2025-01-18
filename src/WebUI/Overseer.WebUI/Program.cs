@@ -1,4 +1,5 @@
 using MudBlazor.Services;
+using MudBlazor.Translations;
 using Overseer.WebUI;
 using Overseer.WebUI.Components;
 
@@ -7,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddServiceDefaults();
 builder.AddRedisOutputCache("overseer-redis-cache");
 builder.Services.AddMudServices();
+builder.Services.AddMudTranslations();
 
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
