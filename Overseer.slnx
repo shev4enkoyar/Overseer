@@ -1,9 +1,16 @@
 ﻿<Solution>
   <Folder Name="/src/">
-    <Project Path="src\Overseer.ApiService\Overseer.ApiService.csproj" Type="Classic C#" />
     <Project Path="src\Overseer.AppHost\Overseer.AppHost.csproj" Type="Classic C#" />
     <Project Path="src\Overseer.ServiceDefaults\Overseer.ServiceDefaults.csproj" Type="Classic C#" />
-    <Project Path="src\Overseer.Web\Overseer.Web.csproj" Type="Classic C#" />
+  </Folder>
+  <Folder Name="/src/WebAPI/">
+    <Project Path="src\WebAPI\Overseer.WebAPI.Application\Overseer.WebAPI.Application.csproj" Type="Classic C#" />
+    <Project Path="src\WebAPI\Overseer.WebAPI.Domain\Overseer.WebAPI.Domain.csproj" Type="Classic C#" />
+    <Project Path="src\WebAPI\Overseer.WebAPI.Infrastructure\Overseer.WebAPI.Infrastructure.csproj" Type="Classic C#" />
+    <Project Path="src\WebAPI\Overseer.WebAPI\Overseer.WebAPI.csproj" Type="Classic C#" />
+  </Folder>
+  <Folder Name="/src/WebUI/">
+    <Project Path="src\WebUI\Overseer.WebUI\Overseer.WebUI.csproj" Type="Classic C#" />
   </Folder>
   <Folder Name="/tests/" />
 </Solution>

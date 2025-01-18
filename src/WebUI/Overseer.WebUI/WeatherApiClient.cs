@@ -1,4 +1,4 @@
-namespace Overseer.Web;
+namespace Overseer.WebUI;
 
 public class WeatherApiClient(HttpClient httpClient)
 {

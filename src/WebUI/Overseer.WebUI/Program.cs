@@ -1,5 +1,5 @@
-using Overseer.Web;
-using Overseer.Web.Components;
+using Overseer.WebUI;
+using Overseer.WebUI.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 

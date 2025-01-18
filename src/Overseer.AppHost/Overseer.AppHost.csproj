@@ -12,8 +12,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Overseer.ApiService\Overseer.ApiService.csproj" />
-    <ProjectReference Include="..\Overseer.Web\Overseer.Web.csproj" />
+    <ProjectReference Include="..\WebUI\Overseer.WebUI\Overseer.WebUI.csproj" />
+    <ProjectReference Include="..\WebAPI\Overseer.WebAPI\Overseer.WebAPI.csproj" />
   </ItemGroup>
 
   <ItemGroup>
