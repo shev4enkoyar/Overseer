@@ -6,4 +6,29 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Folder Include="Containers\Commands\ArchiveContainer\" />
+      <Folder Include="Containers\Commands\CreateContainer\" />
+      <Folder Include="Containers\Commands\DeleteContainer\" />
+      <Folder Include="Containers\Commands\UpdateContainer\" />
+      <Folder Include="Containers\Queries\GetContainersWithPagination\" />
+      <Folder Include="Projects\Queries\GetProjectsWithPagination\" />
+      <Folder Include="VersioningContainers\Tags\Commands\" />
+      <Folder Include="VersioningContainers\Tags\Queries\" />
+      <Folder Include="VersioningContainers\Versions\Commands\ArchiveVersion\" />
+      <Folder Include="VersioningContainers\Versions\Commands\DeleteVersion\" />
+      <Folder Include="VersioningContainers\Versions\Commands\UpdateVersion\" />
+      <Folder Include="VersioningContainers\Versions\Queries\GetVersionsWithPagination\" />
+      <Folder Include="VersioningContainers\Versions\Queries\GetVersion\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="LanguageExt.Core" Version="4.4.9" />
+      <PackageReference Include="MediatR" Version="12.4.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Overseer.WebAPI.Domain\Overseer.WebAPI.Domain.csproj" />
+    </ItemGroup>
+
 </Project>

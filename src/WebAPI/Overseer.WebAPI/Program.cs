@@ -1,9 +1,17 @@
 using Microsoft.OpenApi.Models;
+using Overseer.WebAPI.Application;
+using Overseer.WebAPI.Infrastructure;
+using Overseer.WebAPI.Infrastructure.Data;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
+
+builder.Services.AddApplicationServices()
+    .AddInfrastructure(builder.Configuration);
+
+builder.Services.AddScoped<IApiErrorHandler, ApiErrorHandler>();
 
 builder.Services.AddProblemDetails();
 
@@ -17,6 +25,7 @@ builder.Services.AddOpenApi(options =>
             Version = "v1",
             Description = "A simple web API for managing projects."
         };
+        document.Servers.Add(new OpenApiServer { Url = "http://localhost:5448" });
         return Task.CompletedTask;
     });
 });
@@ -27,6 +36,7 @@ app.UseExceptionHandler();
 
 if (app.Environment.IsDevelopment())
 {
+    await app.InitializeDatabaseAsync();
     app.MapOpenApi();
     app.MapScalarApiReference(options =>
     {
@@ -54,7 +64,9 @@ app.MapGet("/weatherforecast", () =>
 
 app.MapDefaultEndpoints();
 
-app.Run();
+app.MapEndpoints();
+
+await app.RunAsync();
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 {
