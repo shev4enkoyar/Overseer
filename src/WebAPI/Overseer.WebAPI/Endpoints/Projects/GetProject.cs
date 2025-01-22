@@ -1,11 +1,10 @@
 using MediatR;
-using Overseer.WebAPI.Application.Projects.Commands.CreateProject;
 using Overseer.WebAPI.Application.Projects.Queries.GetProject;
 using Overseer.WebAPI.Infrastructure;
 
 namespace Overseer.WebAPI.Endpoints.Projects;
 
-public class GetProject : IEndpoint
+public abstract class GetProject : IEndpoint
 {
     public const string EndpointName = "GetProject";
 

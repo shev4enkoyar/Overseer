@@ -6,7 +6,7 @@ using Overseer.WebAPI.Infrastructure;
 
 namespace Overseer.WebAPI.Endpoints.Projects;
 
-public class GetProjectsWithPagination : IEndpoint
+public abstract class GetProjectsWithPagination : IEndpoint
 {
     public static void MapEndpoint(RouteGroupBuilder routeGroupBuilder)
     {
