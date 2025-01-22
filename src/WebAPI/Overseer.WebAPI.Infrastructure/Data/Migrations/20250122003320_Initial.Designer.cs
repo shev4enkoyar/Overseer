@@ -12,7 +12,7 @@ using Overseer.WebAPI.Infrastructure.Data;
 namespace Overseer.WebAPI.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250119213525_Initial")]
+    [Migration("20250122003320_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -62,6 +62,9 @@ namespace Overseer.WebAPI.Infrastructure.Data.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
+
+                    b.Property<bool>("IsArchived")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .IsRequired()
