@@ -1,3 +1,4 @@
+using Overseer.WebAPI.Domain.Abstractions;
 using Overseer.WebAPI.Domain.Entities;
 
 namespace Overseer.WebAPI.Application.Common.Interfaces;
@@ -10,4 +11,7 @@ public interface IProjectRepository
 
     Task<Option<Project>> GetProjectWithoutTrackingAsync(Guid id, CancellationToken cancellationToken);
     Task<Option<Project>> GetProjectAsync(Guid id, CancellationToken cancellationToken);
+
+    Task<PaginatedList<Project>> GetProjectsWithPaginationAsync(int pageNumber, int pageSize,
+        CancellationToken cancellationToken);
 }

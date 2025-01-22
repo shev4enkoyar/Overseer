@@ -16,15 +16,15 @@ public class ApiErrorHandler : IApiErrorHandler
             );
             switch (ex)
             {
-                // case ValidationException vex:
-                // {
-                //     var details = new ValidationProblemDetails(vex.Errors)
-                //     {
-                //         Status = StatusCodes.Status400BadRequest,
-                //         Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
-                //     };
-                //     return Results.Json(details, statusCode: StatusCodes.Status400BadRequest);
-                // }
+                case ValidationException vex:
+                {
+                    var details = new ValidationProblemDetails(vex.Errors)
+                    {
+                        Status = StatusCodes.Status400BadRequest,
+                        Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
+                    };
+                    return Results.Json(details, statusCode: StatusCodes.Status400BadRequest);
+                }
                 case NotFoundException nfex:
                 {
                     var details = new ProblemDetails

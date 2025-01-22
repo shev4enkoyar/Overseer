@@ -9,5 +9,6 @@ internal static class EndpointMapping
         var projectGroup = ProjectEndpointGroup.MapGroup(app);
         CreateProject.MapEndpoint(projectGroup);
         GetProject.MapEndpoint(projectGroup);
+        GetProjectsWithPagination.MapEndpoint(projectGroup);
     }
 }
