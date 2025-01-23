@@ -27,7 +27,7 @@ jobs:
         dotnet-version: ${{ env.DOTNET_VERSION }}
           
     - name: Restore dependencies
-      run: dotnet restore Overseer.slnx
+      run: dotnet restore Overseer.sln
         
     - name: Build
-      run: dotnet build Overseer.slnx --configuration Release --no-restore
+      run: dotnet build Overseer.sln --configuration Release --no-restore

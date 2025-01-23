@@ -1,0 +1,81 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution items", "solution items", "{089100B1-113F-4E66-888A-E83F3999EAFD}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+		LICENSE = LICENSE
+		.editorconfig = .editorconfig
+		Directory.Build.props = Directory.Build.props
+		Directory.Packages.props = Directory.Packages.props
+		.github\workflows\build.yml = .github\workflows\build.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{827E0CD3-B72D-47B6-A68D-7590B98EB39B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Overseer.AppHost", "src\Overseer.AppHost\Overseer.AppHost.csproj", "{7D057F4F-5851-8067-1841-BB9CB5D4BAA4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Overseer.ServiceDefaults", "src\Overseer.ServiceDefaults\Overseer.ServiceDefaults.csproj", "{647A11BD-5BE1-7C49-0D62-992435A148AC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebAPI", "WebAPI", "{953D89DF-FDD2-4C1A-6A43-6326114B13B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Overseer.WebAPI.Application", "src\WebAPI\Overseer.WebAPI.Application\Overseer.WebAPI.Application.csproj", "{891C69A9-C5FB-2B4F-B912-285D26501A48}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Overseer.WebAPI.Domain", "src\WebAPI\Overseer.WebAPI.Domain\Overseer.WebAPI.Domain.csproj", "{269AE4A6-0B2C-4AFD-39B7-1170B36724D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Overseer.WebAPI.Infrastructure", "src\WebAPI\Overseer.WebAPI.Infrastructure\Overseer.WebAPI.Infrastructure.csproj", "{EFF6EBCF-18F2-6C7C-177B-2501219DB373}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Overseer.WebAPI", "src\WebAPI\Overseer.WebAPI\Overseer.WebAPI.csproj", "{2EEFD4A4-A804-ABF2-9ABB-FA8B7C58EDC7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebUI", "WebUI", "{42A6E319-EFF1-272F-1CD3-D4E80E0CDE70}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Overseer.WebUI", "src\WebUI\Overseer.WebUI\Overseer.WebUI.csproj", "{2A643FED-3B31-E950-BF46-A9B0271ACAB0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{0AB3BF05-4346-4AA6-1389-037BE0695223}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7D057F4F-5851-8067-1841-BB9CB5D4BAA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D057F4F-5851-8067-1841-BB9CB5D4BAA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D057F4F-5851-8067-1841-BB9CB5D4BAA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D057F4F-5851-8067-1841-BB9CB5D4BAA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{647A11BD-5BE1-7C49-0D62-992435A148AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{647A11BD-5BE1-7C49-0D62-992435A148AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{647A11BD-5BE1-7C49-0D62-992435A148AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{647A11BD-5BE1-7C49-0D62-992435A148AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{891C69A9-C5FB-2B4F-B912-285D26501A48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{891C69A9-C5FB-2B4F-B912-285D26501A48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{891C69A9-C5FB-2B4F-B912-285D26501A48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{891C69A9-C5FB-2B4F-B912-285D26501A48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{269AE4A6-0B2C-4AFD-39B7-1170B36724D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{269AE4A6-0B2C-4AFD-39B7-1170B36724D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{269AE4A6-0B2C-4AFD-39B7-1170B36724D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{269AE4A6-0B2C-4AFD-39B7-1170B36724D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFF6EBCF-18F2-6C7C-177B-2501219DB373}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFF6EBCF-18F2-6C7C-177B-2501219DB373}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFF6EBCF-18F2-6C7C-177B-2501219DB373}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFF6EBCF-18F2-6C7C-177B-2501219DB373}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EEFD4A4-A804-ABF2-9ABB-FA8B7C58EDC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EEFD4A4-A804-ABF2-9ABB-FA8B7C58EDC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EEFD4A4-A804-ABF2-9ABB-FA8B7C58EDC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EEFD4A4-A804-ABF2-9ABB-FA8B7C58EDC7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A643FED-3B31-E950-BF46-A9B0271ACAB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A643FED-3B31-E950-BF46-A9B0271ACAB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A643FED-3B31-E950-BF46-A9B0271ACAB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A643FED-3B31-E950-BF46-A9B0271ACAB0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7D057F4F-5851-8067-1841-BB9CB5D4BAA4} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
+		{647A11BD-5BE1-7C49-0D62-992435A148AC} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
+		{953D89DF-FDD2-4C1A-6A43-6326114B13B5} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
+		{42A6E319-EFF1-272F-1CD3-D4E80E0CDE70} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
+		{891C69A9-C5FB-2B4F-B912-285D26501A48} = {953D89DF-FDD2-4C1A-6A43-6326114B13B5}
+		{269AE4A6-0B2C-4AFD-39B7-1170B36724D8} = {953D89DF-FDD2-4C1A-6A43-6326114B13B5}
+		{EFF6EBCF-18F2-6C7C-177B-2501219DB373} = {953D89DF-FDD2-4C1A-6A43-6326114B13B5}
+		{2EEFD4A4-A804-ABF2-9ABB-FA8B7C58EDC7} = {953D89DF-FDD2-4C1A-6A43-6326114B13B5}
+		{2A643FED-3B31-E950-BF46-A9B0271ACAB0} = {42A6E319-EFF1-272F-1CD3-D4E80E0CDE70}
+	EndGlobalSection
+EndGlobal
