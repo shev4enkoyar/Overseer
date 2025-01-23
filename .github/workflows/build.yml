@@ -25,5 +25,8 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore Overseer.sln
         
-    - name: Build
+    - name: Build solution
       run: dotnet build Overseer.sln --configuration Release --no-restore
+      
+    - name: Test solution
+      run: dotnet test Overseer.sln --configuration Release --no-restore --no-build
