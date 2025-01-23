@@ -1,0 +1,33 @@
+name: Build
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+env:
+  DOTNET_VERSION: "9.x"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: Overseer
+
+    steps:
+    - uses: actions/checkout@v4
+      name: Checkout code
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+          
+    - name: Restore dependencies
+      run: dotnet restore Overseer.slnx
+        
+    - name: Build
+      run: dotnet build Overseer.slnx --configuration Release --no-restore
