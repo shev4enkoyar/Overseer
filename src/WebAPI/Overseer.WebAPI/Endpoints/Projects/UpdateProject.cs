@@ -6,12 +6,10 @@ using Overseer.WebAPI.Infrastructure;
 
 namespace Overseer.WebAPI.Endpoints.Projects;
 
-internal abstract class GetProject : IEndpoint
+internal abstract class UpdateProject : IEndpoint
 {
-    public const string EndpointName = "GetProject";
-
     public static void MapEndpoint(RouteGroupBuilder routeGroupBuilder) =>
-        routeGroupBuilder.MapGet("{id:guid}",
+        routeGroupBuilder.MapPut("{id:guid}",
                 async (Guid id, ISender sender, IApiErrorHandler errorHandler) =>
                 {
                     Either<Error, ProjectDto> response = await sender.Send(new GetProjectQuery(id));
@@ -21,6 +19,5 @@ internal abstract class GetProject : IEndpoint
             .WithDescription(
                 "Retrieves details of the project with the specified ID, returning the project data upon success.")
             .Produces<ProjectDto>()
-            .ProducesProblem(StatusCodes.Status404NotFound)
-            .WithName(EndpointName);
+            .ProducesProblem(StatusCodes.Status404NotFound);
 }

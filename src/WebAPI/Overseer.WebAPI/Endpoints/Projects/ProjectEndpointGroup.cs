@@ -2,13 +2,10 @@ using Overseer.WebAPI.Infrastructure;
 
 namespace Overseer.WebAPI.Endpoints.Projects;
 
-public class ProjectEndpointGroup : IEndpointGroup
+internal abstract class ProjectEndpointGroup : IEndpointGroup
 {
-    public static RouteGroupBuilder MapGroup(WebApplication app)
-    {
-        return app.MapGroup("api/projects")
-            .WithTags(EndpointTags.Projects)
-            .ProducesProblem(StatusCodes.Status401Unauthorized)
-            .ProducesProblem(StatusCodes.Status403Forbidden);
-    }
+    public static RouteGroupBuilder MapGroup(WebApplication app) => app.MapGroup("api/projects")
+        .WithTags(EndpointTags.Projects)
+        .ProducesProblem(StatusCodes.Status401Unauthorized)
+        .ProducesProblem(StatusCodes.Status403Forbidden);
 }

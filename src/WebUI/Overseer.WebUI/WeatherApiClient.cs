@@ -1,17 +1,20 @@
 namespace Overseer.WebUI;
 
-public class WeatherApiClient(HttpClient httpClient)
+internal sealed class WeatherApiClient(HttpClient httpClient)
 {
-    public async Task<WeatherForecast[]> GetWeatherAsync(int maxItems = 10, CancellationToken cancellationToken = default)
+    public async Task<WeatherForecast[]> GetWeatherAsync(int maxItems = 10,
+        CancellationToken cancellationToken = default)
     {
         List<WeatherForecast>? forecasts = null;
 
-        await foreach (var forecast in httpClient.GetFromJsonAsAsyncEnumerable<WeatherForecast>("/weatherforecast", cancellationToken))
+        await foreach (WeatherForecast? forecast in httpClient.GetFromJsonAsAsyncEnumerable<WeatherForecast>(
+                           "/weatherforecast", cancellationToken))
         {
             if (forecasts?.Count >= maxItems)
             {
                 break;
             }
+
             if (forecast is not null)
             {
                 forecasts ??= [];
@@ -23,7 +26,7 @@ public class WeatherApiClient(HttpClient httpClient)
     }
 }
 
-public record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
+internal sealed record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 {
     public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
 }

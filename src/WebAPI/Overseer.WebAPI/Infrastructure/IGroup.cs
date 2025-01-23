@@ -1,6 +1,6 @@
 namespace Overseer.WebAPI.Infrastructure;
 
-public interface IEndpointGroup
+internal interface IEndpointGroup
 {
     public static abstract RouteGroupBuilder MapGroup(WebApplication app);
 }

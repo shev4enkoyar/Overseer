@@ -7,20 +7,19 @@ namespace Overseer.WebAPI.Application.Common.Mapping;
 
 internal static class ProjectExtensionMapping
 {
-    internal static ProjectDto ToDto(this Project project)
-    {
-        return new ProjectDto
+    internal static ProjectDto ToDto(this Project project) =>
+        new()
         {
             Id = project.Id,
             Name = project.Name,
             Description = project.Description
         };
-    }
-    
-    public static async Task<PaginatedList<ProjectBriefDto>> ToProjectBriefDtoPaginatedListAsync(this Task<PaginatedList<Project>> paginatedProjectsTask)
+
+    public static async Task<PaginatedList<ProjectBriefDto>> ToProjectBriefDtoPaginatedListAsync(
+        this Task<PaginatedList<Project>> paginatedProjectsTask)
     {
-        var paginatedProjects = await paginatedProjectsTask;
-        var projectBriefDtos = paginatedProjects.Items
+        PaginatedList<Project> paginatedProjects = await paginatedProjectsTask;
+        var projectBriefDtoList = paginatedProjects.Items
             .Select(project => new ProjectBriefDto
             {
                 Id = project.Id,
@@ -29,7 +28,7 @@ internal static class ProjectExtensionMapping
             })
             .ToList();
 
-        return PaginatedList<ProjectBriefDto>.CreateRaw(projectBriefDtos,
+        return PaginatedList<ProjectBriefDto>.CreateRaw(projectBriefDtoList,
             paginatedProjects.TotalCount,
             paginatedProjects.PageNumber,
             paginatedProjects.TotalPages);

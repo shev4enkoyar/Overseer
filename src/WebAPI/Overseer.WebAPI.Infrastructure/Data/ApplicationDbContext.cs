@@ -9,17 +9,18 @@ namespace Overseer.WebAPI.Infrastructure.Data;
 public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options), IUnitOfWork
 {
     public DbSet<Project> Projects => Set<Project>();
-    
+
     public DbSet<Container> Containers => Set<Container>();
-    
+
     public DbSet<VersioningContainer> VersioningContainers => Set<VersioningContainer>();
-    
+
     public DbSet<VersioningContainerVersion> VersioningContainerVersions => Set<VersioningContainerVersion>();
-    
+
     public DbSet<VersioningContainerVersionTag> VersioningContainerVersionTags => Set<VersioningContainerVersionTag>();
-    
-    public DbSet<VersioningContainerVersionTagValue> VersioningContainerVersionTagValues => Set<VersioningContainerVersionTagValue>();
-        
+
+    public DbSet<VersioningContainerVersionTagValue> VersioningContainerVersionTagValues =>
+        Set<VersioningContainerVersionTagValue>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

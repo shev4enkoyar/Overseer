@@ -1,4 +1,6 @@
 using System.ComponentModel;
+using LanguageExt;
+using LanguageExt.Common;
 using MediatR;
 using Overseer.WebAPI.Application.Projects.Queries.GetProjectsWithPagination;
 using Overseer.WebAPI.Domain.Abstractions;
@@ -6,10 +8,9 @@ using Overseer.WebAPI.Infrastructure;
 
 namespace Overseer.WebAPI.Endpoints.Projects;
 
-public abstract class GetProjectsWithPagination : IEndpoint
+internal abstract class GetProjectsWithPagination : IEndpoint
 {
-    public static void MapEndpoint(RouteGroupBuilder routeGroupBuilder)
-    {
+    public static void MapEndpoint(RouteGroupBuilder routeGroupBuilder) =>
         routeGroupBuilder.MapGet("", async (
                 ISender sender,
                 IApiErrorHandler errorHandler,
@@ -18,7 +19,8 @@ public abstract class GetProjectsWithPagination : IEndpoint
                 [Description("The number of projects to include per page. Must be greater than or equal to 1.")]
                 int pageSize = 10) =>
             {
-                var response = await sender.Send(new GetProjectsWithPaginationQuery(pageNumber, pageSize));
+                Either<Error, PaginatedList<ProjectBriefDto>> response =
+                    await sender.Send(new GetProjectsWithPaginationQuery(pageNumber, pageSize));
                 return response.Match(Left: errorHandler.Handle, Right: Results.Ok);
             })
             .WithSummary("Get projects")
@@ -28,5 +30,4 @@ public abstract class GetProjectsWithPagination : IEndpoint
                 "In case of an error (e.g., invalid parameters), a problem response is returned.")
             .Produces<PaginatedList<ProjectBriefDto>>()
             .ProducesValidationProblem();
-    }
 }

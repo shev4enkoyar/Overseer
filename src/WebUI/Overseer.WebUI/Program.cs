@@ -3,7 +3,7 @@ using MudBlazor.Translations;
 using Overseer.WebUI;
 using Overseer.WebUI.Components;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 builder.AddRedisOutputCache("overseer-redis-cache");
@@ -13,18 +13,16 @@ builder.Services.AddMudTranslations();
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+const string webApiAddress = "https+http://overseer-web-api";
 builder.Services.AddHttpClient<WeatherApiClient>(client =>
-{
-    client.BaseAddress = new("https+http://overseer-web-api");
-});
+    client.BaseAddress = new Uri(webApiAddress));
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseExceptionHandler("/Error", true);
     app.UseHsts();
 }
 
@@ -42,4 +40,4 @@ app.MapRazorComponents<App>()
 
 app.MapDefaultEndpoints();
 
-app.Run();
+await app.RunAsync();

@@ -6,14 +6,14 @@ namespace Overseer.WebAPI.Application.Projects.Commands.DeleteProject;
 
 public record DeleteProjectCommand(Guid ProjectId) : ICommand;
 
-internal class DeleteProjectCommandHandler(IProjectRepository projectRepository, IUnitOfWork unitOfWork) 
+internal sealed class DeleteProjectCommandHandler(IProjectRepository projectRepository, IUnitOfWork unitOfWork)
     : ICommandHandler<DeleteProjectCommand>
 {
-    public async Task<Either<Error, Unit>> Handle(DeleteProjectCommand request, CancellationToken cancellationToken)
-    {
-        return await TryAsync(async () =>
+    public async Task<Either<Error, Unit>> Handle(DeleteProjectCommand request, CancellationToken cancellationToken) =>
+        await TryAsync(async () =>
         {
-            var projectOption = await projectRepository.GetProjectAsync(request.ProjectId, cancellationToken);
+            Option<Project> projectOption =
+                await projectRepository.GetProjectAsync(request.ProjectId, cancellationToken);
             return await projectOption.MatchAsync(async project =>
             {
                 await projectRepository.DeleteProjectAsync(project, cancellationToken);
@@ -21,5 +21,4 @@ internal class DeleteProjectCommandHandler(IProjectRepository projectRepository,
                 return Right<Error, Unit>(Unit.Default);
             }, () => Left<Error, Unit>(Error.New(new NotFoundException(nameof(Project), request.ProjectId))));
         }).Match(eitherResult => eitherResult, exception => Left<Error, Unit>(exception));
-    }
 }

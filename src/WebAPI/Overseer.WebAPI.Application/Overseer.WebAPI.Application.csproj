@@ -1,34 +1,28 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-    </PropertyGroup>
-
     <ItemGroup>
-      <Folder Include="Containers\Commands\ArchiveContainer\" />
-      <Folder Include="Containers\Commands\CreateContainer\" />
-      <Folder Include="Containers\Commands\DeleteContainer\" />
-      <Folder Include="Containers\Commands\UpdateContainer\" />
-      <Folder Include="Containers\Queries\GetContainersWithPagination\" />
-      <Folder Include="VersioningContainers\Tags\Commands\" />
-      <Folder Include="VersioningContainers\Tags\Queries\" />
-      <Folder Include="VersioningContainers\Versions\Commands\ArchiveVersion\" />
-      <Folder Include="VersioningContainers\Versions\Commands\DeleteVersion\" />
-      <Folder Include="VersioningContainers\Versions\Commands\UpdateVersion\" />
-      <Folder Include="VersioningContainers\Versions\Queries\GetVersionsWithPagination\" />
-      <Folder Include="VersioningContainers\Versions\Queries\GetVersion\" />
+        <Folder Include="Containers\Commands\ArchiveContainer\"/>
+        <Folder Include="Containers\Commands\CreateContainer\"/>
+        <Folder Include="Containers\Commands\DeleteContainer\"/>
+        <Folder Include="Containers\Commands\UpdateContainer\"/>
+        <Folder Include="Containers\Queries\GetContainersWithPagination\"/>
+        <Folder Include="VersioningContainers\Tags\Commands\"/>
+        <Folder Include="VersioningContainers\Tags\Queries\"/>
+        <Folder Include="VersioningContainers\Versions\Commands\ArchiveVersion\"/>
+        <Folder Include="VersioningContainers\Versions\Commands\DeleteVersion\"/>
+        <Folder Include="VersioningContainers\Versions\Commands\UpdateVersion\"/>
+        <Folder Include="VersioningContainers\Versions\Queries\GetVersionsWithPagination\"/>
+        <Folder Include="VersioningContainers\Versions\Queries\GetVersion\"/>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
-      <PackageReference Include="LanguageExt.Core" Version="4.4.9" />
-      <PackageReference Include="MediatR" Version="12.4.1" />
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions"/>
+        <PackageReference Include="LanguageExt.Core"/>
+        <PackageReference Include="MediatR"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Overseer.WebAPI.Domain\Overseer.WebAPI.Domain.csproj" />
+        <ProjectReference Include="..\Overseer.WebAPI.Domain\Overseer.WebAPI.Domain.csproj"/>
     </ItemGroup>
 
 </Project>

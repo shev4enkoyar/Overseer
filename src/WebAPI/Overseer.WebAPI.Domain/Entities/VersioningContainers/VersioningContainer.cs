@@ -4,7 +4,7 @@ namespace Overseer.WebAPI.Domain.Entities.VersioningContainers;
 
 public class VersioningContainer : BaseEntity<Guid>
 {
-    public List<VersioningContainerVersion> Versions { get; set; } = [];
-    
-    public List<VersioningContainerVersionTag> VersionTags { get; set; } = [];
+    public ICollection<VersioningContainerVersion> Versions { get; init; } = [];
+
+    public ICollection<VersioningContainerVersionTag> VersionTags { get; init; } = [];
 }

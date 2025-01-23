@@ -1,5 +1,6 @@
 using System.Reflection;
 using FluentValidation;
+using FluentValidation.Results;
 using MediatR;
 using ValidationException = Overseer.WebAPI.Application.Common.Exceptions.ValidationException;
 
@@ -10,37 +11,41 @@ public class ValidationBehaviour<TRequest, TResponse>(IEnumerable<IValidator<TRe
     where TRequest : notnull
     where TResponse : IEither
 {
-    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,
+        CancellationToken cancellationToken)
     {
-        if (!validators.Any()) 
+        if (!validators.Any())
+        {
             return await next();
-        
+        }
+
         var context = new ValidationContext<TRequest>(request);
 
-        var validationResults = await Task.WhenAll(
+        ValidationResult[] validationResults = await Task.WhenAll(
             validators.Select(v =>
                 v.ValidateAsync(context, cancellationToken)));
 
         var failures = validationResults
-            .Where(r => r.Errors.Any())
+            .Where(r => r.Errors.Count != 0)
             .SelectMany(r => r.Errors)
             .ToList();
 
         if (failures.Count != 0)
+        {
             return CreateDynamicEither(Error.New(new ValidationException(failures)));
+        }
+
         return await next();
     }
-    
-    private TResponse CreateDynamicEither(Error error)
+
+    private static TResponse CreateDynamicEither(Error error)
     {
-        var rightType = typeof(TResponse).GetGenericArguments()[1];
-        var eitherType = typeof(Either<,>).MakeGenericType(typeof(Error), rightType);
-        var leftMethod = eitherType.GetMethod("Left", BindingFlags.Static | BindingFlags.Public);
-        if (leftMethod == null)
-        {
-            throw new InvalidOperationException("Method 'Left' not found on Either.");
-        }
-        var eitherInstance = leftMethod.Invoke(null, [error]);
+        Type rightType = typeof(TResponse).GetGenericArguments()[1];
+        Type eitherType = typeof(Either<,>).MakeGenericType(typeof(Error), rightType);
+        MethodInfo leftMethod = eitherType.GetMethod("Left", BindingFlags.Static | BindingFlags.Public)
+                                ?? throw new InvalidOperationException("Method 'Left' not found on Either.");
+
+        object? eitherInstance = leftMethod.Invoke(null, [error]);
         return (TResponse)eitherInstance!;
     }
 }

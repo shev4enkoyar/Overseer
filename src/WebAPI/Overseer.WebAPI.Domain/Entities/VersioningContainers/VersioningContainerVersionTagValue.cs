@@ -5,12 +5,12 @@ namespace Overseer.WebAPI.Domain.Entities.VersioningContainers;
 public class VersioningContainerVersionTagValue : BaseEntity<int>
 {
     public string Value { get; set; } = null!;
-    
+
     public int TagId { get; set; }
 
-    public bool IsDefault { get; set; } = false;
-    
+    public bool IsDefault { get; set; }
+
     public VersioningContainerVersionTag Tag { get; set; } = null!;
 
-    public List<VersioningContainerVersion> Versions { get; set; } = [];
+    public ICollection<VersioningContainerVersion> Versions { get; private set; } = [];
 }

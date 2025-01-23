@@ -2,6 +2,9 @@
   <Folder Name="/solution items/">
     <File Path="README.md" />
     <File Path="LICENSE" />
+    <File Path=".editorconfig" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
   </Folder>
   <Folder Name="/src/">
     <Project Path="src\Overseer.AppHost\Overseer.AppHost.csproj" Type="Classic C#" />
