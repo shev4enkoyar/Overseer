@@ -6,6 +6,7 @@
     <File Path="Directory.Build.props" />
     <File Path="Directory.Packages.props" />
     <File Path=".github\workflows\build.yml" />
+    <File Path=".github\workflows\codeql.yml" />
   </Folder>
   <Folder Name="/src/">
     <Project Path="src\Overseer.AppHost\Overseer.AppHost.csproj" Type="Classic C#" />
