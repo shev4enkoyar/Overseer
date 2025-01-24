@@ -1,7 +1,6 @@
 using LanguageExt;
 using LanguageExt.Common;
 using MediatR;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Overseer.WebAPI.Application.Projects.Commands.CreateProject;
 using Overseer.WebAPI.Infrastructure;
 
@@ -24,7 +23,7 @@ internal abstract class CreateProject : IEndpoint
             .WithSummary("Create project")
             .WithDescription(
                 "Creates a new project with the specified name and description, returning the ID of the created project upon success.")
-            .Produces<CreatedAtRoute<Guid>>(StatusCodes.Status201Created)
+            .Produces<Guid>(StatusCodes.Status201Created)
             .ProducesValidationProblem();
 }
 
