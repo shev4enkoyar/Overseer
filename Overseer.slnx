@@ -5,6 +5,8 @@
     <File Path=".editorconfig" />
     <File Path="Directory.Build.props" />
     <File Path="Directory.Packages.props" />
+  </Folder>
+  <Folder Name="/solution items/workflows/">
     <File Path=".github\workflows\build.yml" />
     <File Path=".github\workflows\codeql.yml" />
   </Folder>
