@@ -10,5 +10,7 @@ internal static class EndpointMapping
         CreateProject.MapEndpoint(projectGroup);
         GetProject.MapEndpoint(projectGroup);
         GetProjectsWithPagination.MapEndpoint(projectGroup);
+        UpdateProject.MapEndpoint(projectGroup);
+        DeleteProject.MapEndpoint(projectGroup);
     }
 }

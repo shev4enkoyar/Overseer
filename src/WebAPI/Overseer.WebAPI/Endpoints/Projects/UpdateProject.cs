@@ -1,8 +1,10 @@
+using System.ComponentModel;
 using LanguageExt;
 using LanguageExt.Common;
 using MediatR;
-using Overseer.WebAPI.Application.Projects.Queries.GetProject;
+using Overseer.WebAPI.Application.Projects.Commands.UpdateProject;
 using Overseer.WebAPI.Infrastructure;
+using Unit = LanguageExt.Unit;
 
 namespace Overseer.WebAPI.Endpoints.Projects;
 
@@ -10,14 +12,26 @@ internal abstract class UpdateProject : IEndpoint
 {
     public static void MapEndpoint(RouteGroupBuilder routeGroupBuilder) =>
         routeGroupBuilder.MapPut("{id:guid}",
-                static async (Guid id, ISender sender, IApiErrorHandler errorHandler) =>
+                static async ([Description("The unique identifier of the project to be updated.")] Guid id,
+                    UpdateProjectRequest request, ISender sender, IApiErrorHandler errorHandler) =>
                 {
-                    Either<Error, ProjectDto> response = await sender.Send(new GetProjectQuery(id));
-                    return response.Match(Left: errorHandler.Handle, Right: Results.Ok);
+                    Either<Error, Unit> response = await sender.Send(new UpdateProjectCommand(id, request.Name,
+                        request.Description));
+                    return response.Match(Left: errorHandler.Handle, Right: static _ => Results.NoContent());
                 })
-            .WithSummary("Get project")
+            .WithSummary("Update project")
             .WithDescription(
-                "Retrieves details of the project with the specified ID, returning the project data upon success.")
-            .Produces<ProjectDto>()
+                "Updates the name and description of an existing project identified by its unique ID. " +
+                "If the project with the specified ID does not exist, a 404 Not Found response will be returned.")
+            .Produces(StatusCodes.Status204NoContent)
             .ProducesProblem(StatusCodes.Status404NotFound);
 }
+
+// ReSharper disable once ClassNeverInstantiated.Global
+internal sealed record UpdateProjectRequest(
+    [property: Description("The name of the project to update. " +
+                           "This field is required and should be a non-empty string.")]
+    string Name,
+    [property: Description("The optional description of the project. " +
+                           "This field can provide additional details about the project.")]
+    string? Description = null);
