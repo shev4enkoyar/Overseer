@@ -2,10 +2,6 @@
 
     <ItemGroup>
         <Folder Include="Containers\Commands\ArchiveContainer\"/>
-        <Folder Include="Containers\Commands\CreateContainer\"/>
-        <Folder Include="Containers\Commands\DeleteContainer\"/>
-        <Folder Include="Containers\Commands\UpdateContainer\"/>
-        <Folder Include="Containers\Queries\GetContainersWithPagination\"/>
         <Folder Include="VersioningContainers\Tags\Commands\"/>
         <Folder Include="VersioningContainers\Tags\Queries\"/>
         <Folder Include="VersioningContainers\Versions\Commands\ArchiveVersion\"/>

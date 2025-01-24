@@ -1,5 +1,6 @@
 using Microsoft.OpenApi.Models;
 using Overseer.WebAPI.Application;
+using Overseer.WebAPI.Endpoints;
 using Overseer.WebAPI.Infrastructure;
 using Overseer.WebAPI.Infrastructure.Data;
 using Scalar.AspNetCore;
