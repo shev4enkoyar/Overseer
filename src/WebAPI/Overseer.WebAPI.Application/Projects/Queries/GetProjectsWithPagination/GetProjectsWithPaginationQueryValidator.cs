@@ -6,10 +6,10 @@ public class GetProjectsWithPaginationQueryValidator : AbstractValidator<GetProj
 {
     public GetProjectsWithPaginationQueryValidator()
     {
-        RuleFor(x => x.PageNumber)
+        RuleFor(static x => x.PageNumber)
             .GreaterThanOrEqualTo(1).WithMessage("PageNumber at least greater than or equal to 1.");
 
-        RuleFor(x => x.PageSize)
+        RuleFor(static x => x.PageSize)
             .GreaterThanOrEqualTo(1).WithMessage("PageSize at least greater than or equal to 1.");
     }
 }

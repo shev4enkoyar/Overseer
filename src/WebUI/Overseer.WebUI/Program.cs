@@ -14,7 +14,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 const string webApiAddress = "https+http://overseer-web-api";
-builder.Services.AddHttpClient<WeatherApiClient>(client =>
+builder.Services.AddHttpClient<WeatherApiClient>(static client =>
     client.BaseAddress = new Uri(webApiAddress));
 
 WebApplication app = builder.Build();

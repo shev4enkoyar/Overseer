@@ -9,8 +9,9 @@ public class ValidationException() : Exception("One or more validation failures 
     public ValidationException(IEnumerable<ValidationFailure> failures)
         : this() =>
         Errors = failures
-            .GroupBy(e => e.PropertyName, e => e.ErrorMessage)
-            .ToDictionary(failureGroup => failureGroup.Key, failureGroup => failureGroup.ToArray());
+            .GroupBy(static e => e.PropertyName, static e => e.ErrorMessage)
+            .ToDictionary(static failureGroup => failureGroup.Key,
+                static failureGroup => failureGroup.ToArray());
 
     public IDictionary<string, string[]> Errors { get; } = new Dictionary<string, string[]>();
 }

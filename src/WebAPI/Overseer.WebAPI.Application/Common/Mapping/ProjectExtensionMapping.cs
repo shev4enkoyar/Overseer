@@ -20,7 +20,7 @@ internal static class ProjectExtensionMapping
     {
         PaginatedList<Project> paginatedProjects = await paginatedProjectsTask;
         var projectBriefDtoList = paginatedProjects.Items
-            .Select(project => new ProjectBriefDto
+            .Select(static project => new ProjectBriefDto
             {
                 Id = project.Id,
                 Name = project.Name,

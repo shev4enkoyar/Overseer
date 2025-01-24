@@ -11,8 +11,8 @@ internal sealed class ApiErrorHandler : IApiErrorHandler
         if (error.Exception.IsSome)
         {
             Exception? ex = error.Exception.Match(
-                e => e,
-                () => null!
+                static e => e,
+                static () => null!
             );
             switch (ex)
             {

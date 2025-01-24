@@ -11,14 +11,14 @@ internal abstract class CreateProject : IEndpoint
 {
     public static void MapEndpoint(RouteGroupBuilder routeGroupBuilder) =>
         routeGroupBuilder.MapPost("",
-                async (CreateProjectRequest request, ISender sender, IApiErrorHandler errorHandler) =>
+                static async (CreateProjectRequest request, ISender sender, IApiErrorHandler errorHandler) =>
                 {
                     Either<Error, Guid> response =
                         await sender.Send(new CreateProjectCommand(request.Name, request.Description));
 
                     return response.Match(
                         Left: errorHandler.Handle,
-                        Right: projectId =>
+                        Right: static projectId =>
                             Results.CreatedAtRoute(GetProject.EndpointName, new { id = projectId }, projectId));
                 })
             .WithSummary("Create project")

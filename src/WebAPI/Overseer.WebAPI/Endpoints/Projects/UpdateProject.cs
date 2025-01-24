@@ -10,7 +10,7 @@ internal abstract class UpdateProject : IEndpoint
 {
     public static void MapEndpoint(RouteGroupBuilder routeGroupBuilder) =>
         routeGroupBuilder.MapPut("{id:guid}",
-                async (Guid id, ISender sender, IApiErrorHandler errorHandler) =>
+                static async (Guid id, ISender sender, IApiErrorHandler errorHandler) =>
                 {
                     Either<Error, ProjectDto> response = await sender.Send(new GetProjectQuery(id));
                     return response.Match(Left: errorHandler.Handle, Right: Results.Ok);

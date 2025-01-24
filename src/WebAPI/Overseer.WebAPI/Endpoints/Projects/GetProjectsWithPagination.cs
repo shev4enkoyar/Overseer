@@ -11,7 +11,7 @@ namespace Overseer.WebAPI.Endpoints.Projects;
 internal abstract class GetProjectsWithPagination : IEndpoint
 {
     public static void MapEndpoint(RouteGroupBuilder routeGroupBuilder) =>
-        routeGroupBuilder.MapGet("", async (
+        routeGroupBuilder.MapGet("", static async (
                 ISender sender,
                 IApiErrorHandler errorHandler,
                 [Description("The page number to retrieve. Must be greater than or equal to 1.")]
