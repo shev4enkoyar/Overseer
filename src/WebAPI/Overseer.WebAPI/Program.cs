@@ -38,6 +38,8 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
     app.MapScalarApiReference(options =>
         options.WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient)
+            .WithModels(false)
+            .WithClientButton(false)
             .WithTitle("Overseer")
             .WithTheme(ScalarTheme.DeepSpace));
 }
