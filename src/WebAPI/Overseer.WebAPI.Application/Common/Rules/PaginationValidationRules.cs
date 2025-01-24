@@ -1,7 +1,7 @@
 using FluentValidation;
 using Overseer.WebAPI.Application.Common.Interfaces;
 
-namespace Overseer.WebAPI.Application.Common.Extensions;
+namespace Overseer.WebAPI.Application.Common.Rules;
 
 internal static class PaginationValidationRules
 {

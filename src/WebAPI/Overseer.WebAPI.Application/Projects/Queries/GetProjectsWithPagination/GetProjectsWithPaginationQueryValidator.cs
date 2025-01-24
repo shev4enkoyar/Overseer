@@ -1,5 +1,5 @@
 using FluentValidation;
-using Overseer.WebAPI.Application.Common.Extensions;
+using Overseer.WebAPI.Application.Common.Rules;
 
 namespace Overseer.WebAPI.Application.Projects.Queries.GetProjectsWithPagination;
 
