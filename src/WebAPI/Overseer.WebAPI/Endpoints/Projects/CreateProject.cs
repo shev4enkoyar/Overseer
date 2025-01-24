@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using LanguageExt;
 using LanguageExt.Common;
 using MediatR;
@@ -28,4 +29,10 @@ internal abstract class CreateProject : IEndpoint
 }
 
 // ReSharper disable once ClassNeverInstantiated.Global
-internal sealed record CreateProjectRequest(string Name, string? Description = null);
+internal sealed record CreateProjectRequest(
+    [property: Description("The name of the project to create. " +
+                           "This field is required and should be a non-empty string.")]
+    string Name,
+    [property: Description("The optional description of the project. " +
+                           "This field can provide additional details about the project.")]
+    string? Description = null);
