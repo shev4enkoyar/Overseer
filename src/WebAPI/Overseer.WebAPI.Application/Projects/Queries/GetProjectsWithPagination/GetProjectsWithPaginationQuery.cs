@@ -6,7 +6,7 @@ namespace Overseer.WebAPI.Application.Projects.Queries.GetProjectsWithPagination
 
 public record GetProjectsWithPaginationQuery(
     int PageNumber,
-    int PageSize) : IQuery<PaginatedList<ProjectBriefDto>>;
+    int PageSize) : IQuery<PaginatedList<ProjectBriefDto>>, IPaginatedQuery;
 
 internal sealed class GetProjectsWithPaginationQueryHandler(IProjectRepository projectRepository)
     : IQueryHandler<GetProjectsWithPaginationQuery, PaginatedList<ProjectBriefDto>>

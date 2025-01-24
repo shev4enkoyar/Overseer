@@ -1,15 +1,16 @@
 using FluentValidation;
+using Overseer.WebAPI.Application.Common.Extensions;
 
 namespace Overseer.WebAPI.Application.Projects.Queries.GetProjectsWithPagination;
 
-public class GetProjectsWithPaginationQueryValidator : AbstractValidator<GetProjectsWithPaginationQuery>
+internal sealed class GetProjectsWithPaginationQueryValidator : AbstractValidator<GetProjectsWithPaginationQuery>
 {
     public GetProjectsWithPaginationQueryValidator()
     {
         RuleFor(static x => x.PageNumber)
-            .GreaterThanOrEqualTo(1).WithMessage("PageNumber at least greater than or equal to 1.");
+            .ValidatePageNumber();
 
         RuleFor(static x => x.PageSize)
-            .GreaterThanOrEqualTo(1).WithMessage("PageSize at least greater than or equal to 1.");
+            .ValidatePageSize();
     }
 }
