@@ -1,4 +1,6 @@
-using Microsoft.OpenApi.Models;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using Overseer.WebAPI;
 using Overseer.WebAPI.Application;
 using Overseer.WebAPI.Endpoints;
 using Overseer.WebAPI.Infrastructure;
@@ -16,17 +18,27 @@ builder.Services.AddScoped<IApiErrorHandler, ApiErrorHandler>();
 
 builder.Services.AddProblemDetails();
 
-builder.Services.AddOpenApi(options => options.AddDocumentTransformer((document, _, _) =>
-{
-    document.Info = new OpenApiInfo
-    {
-        Title = "Overseer",
-        Version = "v1",
-        Description = "A simple web API for managing projects."
-    };
-    document.Servers.Add(new OpenApiServer { Url = "http://localhost:5448" });
-    return Task.CompletedTask;
-}));
+builder.Services.AddOpenApi("v1", options =>
+    options.AddDocumentTransformer<BearerSecuritySchemeTransformer>());
+
+builder.Services.AddAuthorization();
+
+builder.Services.AddAuthentication()
+    .AddKeycloakJwtBearer(
+        "overseer-keycloak",
+        "overseer",
+        options =>
+        {
+            options.RequireHttpsMetadata = false;
+            options.Audience = "account";
+            options.MetadataAddress = "https+http://overseer-keycloak/realms/overseer/.well-known/openid-configuration";
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidIssuer = "https+http://overseer-keycloak/realms/overseer",
+            };
+        });
+
+builder.Services.AddAuthorizationBuilder();
 
 WebApplication app = builder.Build();
 
@@ -41,8 +53,13 @@ if (app.Environment.IsDevelopment())
             .WithModels(false)
             .WithClientButton(false)
             .WithTitle("Overseer")
-            .WithTheme(ScalarTheme.DeepSpace));
+            .WithTheme(ScalarTheme.DeepSpace)
+            .WithHttpBearerAuthentication(bearerOptions => bearerOptions.Token = "your-bearer-token"));
 }
+
+app.MapGet("/authentication/me", (ClaimsPrincipal claimsPrincipal) =>
+        claimsPrincipal.Claims.ToDictionary(x => x.Type, x => x.Value))
+    .RequireAuthorization();
 
 string[] summaries =
     ["Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"];
@@ -61,11 +78,16 @@ app.MapGet("/weatherforecast", () =>
             .ToArray();
         return forecast;
     })
-    .WithName("GetWeatherForecast");
+    .WithName("GetWeatherForecast")
+    .RequireAuthorization();
 
 app.MapDefaultEndpoints();
 
 app.MapEndpoints();
+
+app.UseAuthentication();
+
+app.UseAuthorization();
 
 await app.RunAsync();
 
