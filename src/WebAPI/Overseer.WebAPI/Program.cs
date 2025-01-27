@@ -54,11 +54,11 @@ if (app.Environment.IsDevelopment())
             .WithClientButton(false)
             .WithTitle("Overseer")
             .WithTheme(ScalarTheme.DeepSpace)
-            .WithHttpBearerAuthentication(bearerOptions => bearerOptions.Token = "your-bearer-token"));
+            .WithHttpBearerAuthentication(bearerOptions => bearerOptions.Token = string.Empty));
 }
 
 app.MapGet("/authentication/me", (ClaimsPrincipal claimsPrincipal) =>
-        claimsPrincipal.Claims.ToDictionary(x => x.Type, x => x.Value))
+        claimsPrincipal.Claims.Select(x => $"{x.Type} : {x.Value}"))
     .RequireAuthorization();
 
 string[] summaries =
