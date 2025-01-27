@@ -2,5 +2,5 @@ namespace Overseer.WebAPI.Application.Common.Interfaces;
 
 public interface IUnitOfWork
 {
-    Task<int> SaveChangesAsync(CancellationToken cancellationToken);
+    Task<Fin<int>> TrySaveChangesAsync(CancellationToken cancellationToken);
 }

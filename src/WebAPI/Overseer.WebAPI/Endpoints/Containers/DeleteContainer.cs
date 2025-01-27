@@ -1,6 +1,5 @@
 using System.ComponentModel;
 using LanguageExt;
-using LanguageExt.Common;
 using MediatR;
 using Overseer.WebAPI.Application.Containers.Commands.DeleteContainer;
 using Overseer.WebAPI.Infrastructure;
@@ -17,8 +16,8 @@ internal abstract class DeleteContainer : IEndpoint
                 ISender sender,
                 IApiErrorHandler errorHandler) =>
             {
-                Either<Error, Unit> response = await sender.Send(new DeleteContainerCommand(id));
-                return response.Match(Left: errorHandler.Handle, Right: static _ => Results.NoContent());
+                Fin<Unit> response = await sender.Send(new DeleteContainerCommand(id));
+                return response.Match<IResult>(static _ => Results.NoContent(), errorHandler.Handle);
             })
             .WithSummary("Delete container")
             .WithDescription(

@@ -27,12 +27,12 @@ IResourceBuilder<RedisResource> cache = builder.AddRedis("overseer-redis-cache")
 
 IResourceBuilder<ProjectResource> apiService = builder.AddProject<Overseer_WebAPI>("overseer-web-api")
     .WithExternalHttpEndpoints()
+    .WithWaitingReference(cache)
     .WithWaitingReference(keycloak)
     .WithWaitingReference(database);
 
 builder.AddProject<Overseer_WebUI>("overseer-web-ui")
     .WithExternalHttpEndpoints()
-    .WithWaitingReference(cache)
     .WithWaitingReference(keycloak)
     .WithWaitingReference(apiService);
 

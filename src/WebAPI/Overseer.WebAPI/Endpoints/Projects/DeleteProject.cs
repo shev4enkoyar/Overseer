@@ -1,6 +1,5 @@
 using System.ComponentModel;
 using LanguageExt;
-using LanguageExt.Common;
 using MediatR;
 using Overseer.WebAPI.Application.Projects.Commands.DeleteProject;
 using Overseer.WebAPI.Infrastructure;
@@ -14,8 +13,8 @@ internal abstract class DeleteProject : IEndpoint
             static async ([Description("The unique identifier of the project to be deleted.")] Guid id, ISender sender,
                 IApiErrorHandler errorHandler) =>
             {
-                Either<Error, Unit> response = await sender.Send(new DeleteProjectCommand(id));
-                return response.Match(Left: errorHandler.Handle, Right: static _ => Results.NoContent());
+                Fin<Unit> response = await sender.Send(new DeleteProjectCommand(id));
+                return response.Match<IResult>(static _ => Results.NoContent(), errorHandler.Handle);
             })
         .WithSummary("Delete project")
         .WithDescription(

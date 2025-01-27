@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using LanguageExt;
-using LanguageExt.Common;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using Overseer.WebAPI.Application.Projects.Commands.CreateProject;
 using Overseer.WebAPI.Infrastructure;
 
@@ -11,15 +11,15 @@ internal abstract class CreateProject : IEndpoint
 {
     public static void MapEndpoint(RouteGroupBuilder routeGroupBuilder) =>
         routeGroupBuilder.MapPost("",
-                static async (CreateProjectRequest request, ISender sender, IApiErrorHandler errorHandler) =>
+                static async (CreateProjectRequest request, [FromHeader(Name = "X-Idempotency-Key")] Guid requestId,
+                    ISender sender, IApiErrorHandler errorHandler) =>
                 {
-                    Either<Error, Guid> response =
-                        await sender.Send(new CreateProjectCommand(request.Name, request.Description));
+                    Fin<Guid> response =
+                        await sender.Send(new CreateProjectCommand(requestId, request.Name, request.Description));
 
-                    return response.Match(
-                        Left: errorHandler.Handle,
-                        Right: static projectId =>
-                            Results.CreatedAtRoute(GetProject.EndpointName, new { id = projectId }, projectId));
+                    return response.Match(static projectId =>
+                            Results.CreatedAtRoute(GetProject.EndpointName, new { id = projectId }, projectId),
+                        errorHandler.Handle);
                 })
             .WithSummary("Create project")
             .WithDescription(

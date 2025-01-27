@@ -9,7 +9,6 @@ namespace Overseer.WebAPI.Application.Common.Behaviours;
 public class ValidationBehaviour<TRequest, TResponse>(IEnumerable<IValidator<TRequest>> validators)
     : IPipelineBehavior<TRequest, TResponse>
     where TRequest : notnull
-    where TResponse : IEither
 {
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,
         CancellationToken cancellationToken)
@@ -32,20 +31,26 @@ public class ValidationBehaviour<TRequest, TResponse>(IEnumerable<IValidator<TRe
 
         if (failures.Count != 0)
         {
-            return CreateDynamicEither(Error.New(new ValidationException(failures)));
+            return CreateFailureResult(Error.New(new ValidationException(failures)));
         }
 
         return await next();
     }
 
-    private static TResponse CreateDynamicEither(Error error)
+    private static TResponse CreateFailureResult(Error error)
     {
-        Type rightType = typeof(TResponse).GetGenericArguments()[1];
-        Type eitherType = typeof(Either<,>).MakeGenericType(typeof(Error), rightType);
-        MethodInfo leftMethod = eitherType.GetMethod("Left", BindingFlags.Static | BindingFlags.Public)
-                                ?? throw new InvalidOperationException("Method 'Left' not found on Either.");
+        Type responseType = typeof(TResponse).GetGenericArguments()[0];
+        Type finType = typeof(Fin<>).MakeGenericType(responseType);
+        MethodInfo[] failMethods = finType.GetMethods(BindingFlags.Static | BindingFlags.Public)
+            .Where(static m => m.Name == "Fail" && m.GetParameters().Length == 1)
+            .ToArray();
 
-        object? eitherInstance = leftMethod.Invoke(null, [error]);
-        return (TResponse)eitherInstance!;
+        MethodInfo finFailMethod = failMethods
+                                       .FirstOrDefault(static m =>
+                                           m.GetParameters()[0].ParameterType == typeof(Error)) ??
+                                   throw new InvalidOperationException("Method 'Fail' not found on Fin<T>.");
+
+        object? result = finFailMethod.Invoke(null, [error]);
+        return (TResponse)result!;
     }
 }

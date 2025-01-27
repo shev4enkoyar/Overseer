@@ -11,11 +11,10 @@ public record GetProjectsWithPaginationQuery(
 internal sealed class GetProjectsWithPaginationQueryHandler(IProjectRepository projectRepository)
     : IQueryHandler<GetProjectsWithPaginationQuery, PaginatedList<ProjectBriefDto>>
 {
-    public async Task<Either<Error, PaginatedList<ProjectBriefDto>>> Handle(GetProjectsWithPaginationQuery request,
+    public async Task<Fin<PaginatedList<ProjectBriefDto>>> Handle(GetProjectsWithPaginationQuery request,
         CancellationToken cancellationToken) =>
-        await TryAsync(async () =>
-                await projectRepository.GetProjectsWithPaginationAsync(request.PageNumber, request.PageSize,
-                        cancellationToken)
-                    .ToProjectBriefDtoPaginatedListAsync())
-            .ToEither();
+        await projectRepository.GetProjectsWithPaginationAsync(
+                request.PageNumber, request.PageSize,
+                cancellationToken)
+            .ToProjectBriefDtoPaginatedListAsync();
 }

@@ -1,6 +1,5 @@
 using System.ComponentModel;
 using LanguageExt;
-using LanguageExt.Common;
 using MediatR;
 using Overseer.WebAPI.Application.Containers.Queries.GetContainersWithPagination;
 using Overseer.WebAPI.Domain.Abstractions;
@@ -19,9 +18,9 @@ internal abstract class GetContainersWithPagination : IEndpoint
                 [Description("The number of containers to include per page. Must be greater than or equal to 1.")]
                 int pageSize = 10) =>
             {
-                Either<Error, PaginatedList<ContainerBriefDto>> response =
+                Fin<PaginatedList<ContainerBriefDto>> response =
                     await sender.Send(new GetContainersWithPaginationQuery(pageNumber, pageSize));
-                return response.Match(Left: errorHandler.Handle, Right: Results.Ok);
+                return response.Match(Results.Ok, errorHandler.Handle);
             })
             .WithSummary("Get containers")
             .WithDescription(

@@ -6,7 +6,6 @@ using Overseer.WebUI.Components;
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
-builder.AddRedisOutputCache("overseer-redis-cache");
 builder.Services.AddMudServices();
 builder.Services.AddMudTranslations();
 
@@ -30,8 +29,6 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 app.UseAntiforgery();
-
-app.UseOutputCache();
 
 app.MapStaticAssets();
 

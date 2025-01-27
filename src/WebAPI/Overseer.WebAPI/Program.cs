@@ -14,6 +14,8 @@ builder.AddServiceDefaults();
 builder.Services.AddApplicationServices()
     .AddInfrastructure(builder.Configuration);
 
+builder.AddRedisDistributedCache("overseer-redis-cache");
+
 builder.Services.AddScoped<IApiErrorHandler, ApiErrorHandler>();
 
 builder.Services.AddProblemDetails();
@@ -34,7 +36,7 @@ builder.Services.AddAuthentication()
             options.MetadataAddress = "https+http://overseer-keycloak/realms/overseer/.well-known/openid-configuration";
             options.TokenValidationParameters = new TokenValidationParameters
             {
-                ValidIssuer = "https+http://overseer-keycloak/realms/overseer",
+                ValidIssuer = "https+http://overseer-keycloak/realms/overseer"
             };
         });
 

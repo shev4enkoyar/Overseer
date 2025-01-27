@@ -1,5 +1,4 @@
 using LanguageExt;
-using LanguageExt.Common;
 using MediatR;
 using Overseer.WebAPI.Application.Projects.Queries.GetProject;
 using Overseer.WebAPI.Infrastructure;
@@ -14,8 +13,8 @@ internal abstract class GetProject : IEndpoint
         routeGroupBuilder.MapGet("{id:guid}",
                 static async (Guid id, ISender sender, IApiErrorHandler errorHandler) =>
                 {
-                    Either<Error, ProjectDto> response = await sender.Send(new GetProjectQuery(id));
-                    return response.Match(Left: errorHandler.Handle, Right: Results.Ok);
+                    Fin<ProjectDto> response = await sender.Send(new GetProjectQuery(id));
+                    return response.Match(Results.Ok, errorHandler.Handle);
                 })
             .WithSummary("Get project")
             .WithDescription(

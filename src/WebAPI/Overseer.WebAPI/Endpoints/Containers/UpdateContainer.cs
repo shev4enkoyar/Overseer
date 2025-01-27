@@ -1,6 +1,5 @@
 using System.ComponentModel;
 using LanguageExt;
-using LanguageExt.Common;
 using MediatR;
 using Overseer.WebAPI.Application.Containers.Commands.UpdateContainer;
 using Overseer.WebAPI.Infrastructure;
@@ -15,9 +14,9 @@ internal abstract class UpdateContainer : IEndpoint
                 static async ([Description("The unique identifier of the container to be updated.")] Guid id,
                     UpdateContainerRequest request, ISender sender, IApiErrorHandler errorHandler) =>
                 {
-                    Either<Error, Unit> response = await sender.Send(new UpdateContainerCommand(id, request.Name,
+                    Fin<Unit> response = await sender.Send(new UpdateContainerCommand(id, request.Name,
                         request.Description));
-                    return response.Match(Left: errorHandler.Handle, Right: static _ => Results.NoContent());
+                    return response.Match<IResult>(static _ => Results.NoContent(), errorHandler.Handle);
                 })
             .WithSummary("Update container")
             .WithDescription(

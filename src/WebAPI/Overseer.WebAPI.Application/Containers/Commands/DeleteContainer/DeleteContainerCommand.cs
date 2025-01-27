@@ -6,6 +6,6 @@ public record DeleteContainerCommand(Guid ContainerId) : ICommand;
 
 internal sealed class DeleteContainerCommandHandler : ICommandHandler<DeleteContainerCommand>
 {
-    public Task<Either<Error, Unit>> Handle(DeleteContainerCommand request, CancellationToken cancellationToken) =>
+    public Task<Fin<Unit>> Handle(DeleteContainerCommand request, CancellationToken cancellationToken) =>
         throw new NotImplementedException();
 }

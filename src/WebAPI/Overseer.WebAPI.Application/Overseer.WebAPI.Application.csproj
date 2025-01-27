@@ -13,7 +13,7 @@
 
     <ItemGroup>
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions"/>
-        <PackageReference Include="LanguageExt.Core"/>
+        <PackageReference Include="LanguageExt.Core" />
         <PackageReference Include="MediatR"/>
     </ItemGroup>
 

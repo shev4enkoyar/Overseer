@@ -1,6 +1,5 @@
 using System.ComponentModel;
 using LanguageExt;
-using LanguageExt.Common;
 using MediatR;
 using Overseer.WebAPI.Application.Projects.Commands.UpdateProject;
 using Overseer.WebAPI.Infrastructure;
@@ -15,9 +14,9 @@ internal abstract class UpdateProject : IEndpoint
                 static async ([Description("The unique identifier of the project to be updated.")] Guid id,
                     UpdateProjectRequest request, ISender sender, IApiErrorHandler errorHandler) =>
                 {
-                    Either<Error, Unit> response = await sender.Send(new UpdateProjectCommand(id, request.Name,
+                    Fin<Unit> response = await sender.Send(new UpdateProjectCommand(id, request.Name,
                         request.Description));
-                    return response.Match(Left: errorHandler.Handle, Right: static _ => Results.NoContent());
+                    return response.Match<IResult>(static _ => Results.NoContent(), errorHandler.Handle);
                 })
             .WithSummary("Update project")
             .WithDescription(

@@ -10,6 +10,6 @@ public record GetContainersWithPaginationQuery(
 internal sealed class GetContainersWithPaginationQueryHandler
     : IQueryHandler<GetContainersWithPaginationQuery, PaginatedList<ContainerBriefDto>>
 {
-    public Task<Either<Error, PaginatedList<ContainerBriefDto>>> Handle(GetContainersWithPaginationQuery request,
+    public Task<Fin<PaginatedList<ContainerBriefDto>>> Handle(GetContainersWithPaginationQuery request,
         CancellationToken cancellationToken) => throw new NotImplementedException();
 }
