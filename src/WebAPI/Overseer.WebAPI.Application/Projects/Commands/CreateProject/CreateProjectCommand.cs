@@ -21,6 +21,5 @@ internal sealed class CreateProjectCommandHandler(IProjectRepository projectRepo
         Result<int> saveResult = await unitOfWork.TrySaveChangesAsync(cancellationToken);
 
         return saveResult.Map(() => Result<Guid>.Success(project.Id), Result<Guid>.Failure);
-#pragma warning restore CS0162 // Unreachable code detected
     }
 }
