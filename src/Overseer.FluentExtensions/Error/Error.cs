@@ -34,8 +34,8 @@ public readonly struct Error : IError, IEquatable<Error>
         ExceptionType = exceptionType;
         if (exceptionType != null)
         {
-            var some = Type.GetType(exceptionType);
-            Exception = (Exception)Activator.CreateInstance(some!, exception.Message, exception.Source)!;
+            var type = Type.GetType(exceptionType);
+            Exception = (Exception)Activator.CreateInstance(type!, exception.Message, exception.Source)!;
         }
     }
 
