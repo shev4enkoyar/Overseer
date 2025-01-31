@@ -1,4 +1,3 @@
-using System.Reflection;
 using FluentValidation;
 using FluentValidation.Results;
 using MediatR;
@@ -10,6 +9,7 @@ namespace Overseer.WebAPI.Application.Common.Behaviours;
 public class ValidationBehaviour<TRequest, TResponse>(IEnumerable<IValidator<TRequest>> validators)
     : IPipelineBehavior<TRequest, TResponse>
     where TRequest : notnull
+    where TResponse : IResult
 {
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,
         CancellationToken cancellationToken)
@@ -30,28 +30,21 @@ public class ValidationBehaviour<TRequest, TResponse>(IEnumerable<IValidator<TRe
             .SelectMany(r => r.Errors)
             .ToList();
 
-        if (failures.Count != 0)
+        if (failures.Count == 0)
         {
-            return CreateFailureResult(new ValidationException(failures));
+            return await next();
         }
 
-        return await next();
-    }
+        var error = Error.Create(new ValidationException(failures));
+        if (!typeof(TResponse).IsGenericType || typeof(TResponse).GetGenericTypeDefinition() != typeof(Result<>))
+        {
+            return (TResponse)(object)Result.Failure(error);
+        }
 
-    private static TResponse CreateFailureResult(Error error)
-    {
-        Type responseType = typeof(TResponse).GetGenericArguments()[0];
-        Type finType = typeof(Result<>).MakeGenericType(responseType);
-        MethodInfo[] failMethods = finType.GetMethods(BindingFlags.Static | BindingFlags.Public)
-            .Where(static m => m.Name == "Failure" && m.GetParameters().Length == 1)
-            .ToArray();
+        Type resultType = typeof(TResponse).GetGenericArguments()[0];
+        Type constructedResultType = typeof(Result<>).MakeGenericType(resultType);
+        object failureResult = Activator.CreateInstance(constructedResultType, error)!;
 
-        MethodInfo finFailMethod = failMethods
-                                       .FirstOrDefault(static m =>
-                                           m.GetParameters()[0].ParameterType == typeof(Error)) ??
-                                   throw new InvalidOperationException("Method 'Failure' not found on Result<T>.");
-
-        object? result = finFailMethod.Invoke(null, [error]);
-        return (TResponse)result!;
+        return (TResponse)failureResult;
     }
 }

@@ -1,9 +1,14 @@
+using System.Text.Json.Serialization;
+
 namespace Overseer.FluentExtensions.Error;
 
 public readonly struct Error : IError, IEquatable<Error>
 {
-    public string Message { get; }
-    public Exception? Exception { get; }
+    [JsonPropertyName("message")] public string Message { get; }
+
+    [JsonPropertyName("exception")] public Exception? Exception { get; }
+
+    [JsonPropertyName("exception-type")] public string? ExceptionType { get; } = null;
 
     private Error(string message) => Message = message;
 
@@ -11,12 +16,27 @@ public readonly struct Error : IError, IEquatable<Error>
     {
         Exception = exception;
         Message = exception.Message;
+        ExceptionType = exception.GetType().AssemblyQualifiedName;
     }
 
     private Error(string message, Exception exception)
     {
         Message = message;
         Exception = exception;
+        ExceptionType = exception.GetType().AssemblyQualifiedName;
+    }
+
+    [JsonConstructor]
+    public Error(string message, Exception exception, string? exceptionType)
+    {
+        Message = message;
+        Exception = exception;
+        ExceptionType = exceptionType;
+        if (exceptionType != null)
+        {
+            var some = Type.GetType(exceptionType);
+            Exception = (Exception)Activator.CreateInstance(some!, exception.Message, exception.Source)!;
+        }
     }
 
     public static Error Create(string message) => new(message);

@@ -21,14 +21,14 @@ internal sealed class ApiErrorHandler : IApiErrorHandler
                         };
                         return Results.Json(details, statusCode: StatusCodes.Status400BadRequest);
                     }
-                case NotFoundException nfex:
+                case NotFoundException:
                     {
                         var details = new ProblemDetails
                         {
                             Status = StatusCodes.Status404NotFound,
                             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
                             Title = "The specified resource was not found.",
-                            Detail = nfex.Message
+                            Detail = error.Message
                         };
                         return Results.NotFound(details);
                     }

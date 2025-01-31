@@ -1,7 +1,16 @@
-﻿namespace Overseer.FluentExtensions.Result;
+﻿using System.Text.Json.Serialization;
+
+namespace Overseer.FluentExtensions.Result;
 
 public readonly struct Result : IResult, IEquatable<Result>
 {
+    [JsonConstructor]
+    public Result(bool isSuccessful, Error.Error error)
+    {
+        IsSuccessful = isSuccessful;
+        Error = error;
+    }
+
     public Result() => IsSuccessful = true;
 
     public Result(Error.Error error)
@@ -10,11 +19,11 @@ public readonly struct Result : IResult, IEquatable<Result>
         IsSuccessful = false;
     }
 
-    public bool IsSuccessful { get; }
+    [JsonPropertyName("isSuccessful")] public bool IsSuccessful { get; }
 
-    public bool IsFailure => !IsSuccessful;
+    [JsonIgnore] public bool IsFailure => !IsSuccessful;
 
-    public Error.Error Error { get; }
+    [JsonPropertyName("error")] public Error.Error Error { get; }
 
     public static Result Success() => new();
     public static Result Failure(Error.Error error) => new(error);
@@ -35,6 +44,14 @@ public readonly struct Result : IResult, IEquatable<Result>
 
 public struct Result<T> : IResult<T>, IEquatable<Result<T>>
 {
+    [JsonConstructor]
+    public Result(bool isSuccessful, T value, Error.Error error)
+    {
+        IsSuccessful = isSuccessful;
+        Value = value;
+        Error = error;
+    }
+
     public Result(T value)
     {
         Value = value;
@@ -48,13 +65,13 @@ public struct Result<T> : IResult<T>, IEquatable<Result<T>>
         IsSuccessful = false;
     }
 
-    public bool IsSuccessful { get; }
+    [JsonPropertyName("isSuccessful")] public bool IsSuccessful { get; }
 
-    public readonly bool IsFailure => !IsSuccessful;
+    [JsonIgnore] public readonly bool IsFailure => !IsSuccessful;
 
-    public Error.Error Error { get; }
+    [JsonPropertyName("error")] public Error.Error Error { get; }
 
-    public T Value { get; set; }
+    [JsonPropertyName("value")] public T Value { get; set; }
 
     public static Result<T> Success(T value) => new(value);
     public static Result<T> Failure(Error.Error error) => new(error);

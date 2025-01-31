@@ -18,7 +18,6 @@ public static class DependencyInjection
         string? databaseConnectionString = configuration["ConnectionStings:Database"];
 
 #pragma warning disable EXTEXP0018
-        services.AddSingleton(typeof(IHybridCacheSerializer<>), typeof(FinHybridCacheSerializer<>));
         services.AddHybridCache();
 #pragma warning restore EXTEXP0018
 
