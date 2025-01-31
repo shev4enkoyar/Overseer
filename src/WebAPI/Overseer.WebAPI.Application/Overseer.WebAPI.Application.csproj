@@ -13,11 +13,11 @@
 
     <ItemGroup>
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions"/>
-        <PackageReference Include="LanguageExt.Core" />
         <PackageReference Include="MediatR"/>
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\Overseer.FluentExtensions\Overseer.FluentExtensions.csproj"/>
         <ProjectReference Include="..\Overseer.WebAPI.Domain\Overseer.WebAPI.Domain.csproj"/>
     </ItemGroup>
 

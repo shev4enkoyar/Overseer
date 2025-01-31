@@ -13,6 +13,7 @@
   </Folder>
   <Folder Name="/src/">
     <Project Path="src\Overseer.AppHost\Overseer.AppHost.csproj" Type="Classic C#" />
+    <Project Path="src\Overseer.FluentExtensions\Overseer.FluentExtensions.csproj" Type="Classic C#" />
     <Project Path="src\Overseer.ServiceDefaults\Overseer.ServiceDefaults.csproj" Type="Classic C#" />
   </Folder>
   <Folder Name="/src/WebAPI/">

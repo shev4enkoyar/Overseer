@@ -1,3 +1,2 @@
-global using LanguageExt;
-global using LanguageExt.Common;
-global using static LanguageExt.Prelude;
+global using Overseer.FluentExtensions.Option;
+global using Overseer.FluentExtensions.Result;

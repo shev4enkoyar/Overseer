@@ -8,6 +8,6 @@ public record CreateContainerCommand(
 
 internal sealed class CreateContainerCommandHandler : ICommandHandler<CreateContainerCommand>
 {
-    public Task<Fin<Unit>> Handle(CreateContainerCommand request, CancellationToken cancellationToken) =>
+    public Task<Result> Handle(CreateContainerCommand request, CancellationToken cancellationToken) =>
         throw new NotImplementedException();
 }

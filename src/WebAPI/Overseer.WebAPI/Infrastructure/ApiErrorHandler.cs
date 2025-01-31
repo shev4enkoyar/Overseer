@@ -1,5 +1,5 @@
-using LanguageExt.Common;
 using Microsoft.AspNetCore.Mvc;
+using Overseer.FluentExtensions.Error;
 using Overseer.WebAPI.Application.Common.Exceptions;
 
 namespace Overseer.WebAPI.Infrastructure;
@@ -8,13 +8,9 @@ internal sealed class ApiErrorHandler : IApiErrorHandler
 {
     public IResult Handle(Error error)
     {
-        if (error.Exception.IsSome)
+        if (error.Exception != null)
         {
-            Exception? ex = error.Exception.Match(
-                static e => e,
-                static () => null!
-            );
-            switch (ex)
+            switch (error.Exception)
             {
                 case ValidationException vex:
                     {
@@ -62,7 +58,7 @@ internal sealed class ApiErrorHandler : IApiErrorHandler
                         {
                             Status = StatusCodes.Status500InternalServerError,
                             Title = "Unhandled exception",
-                            Detail = ex.Message
+                            Detail = error.Message
                         };
                         return Results.Problem(
                             title: details.Title,

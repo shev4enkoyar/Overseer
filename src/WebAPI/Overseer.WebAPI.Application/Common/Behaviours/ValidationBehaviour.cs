@@ -2,6 +2,7 @@ using System.Reflection;
 using FluentValidation;
 using FluentValidation.Results;
 using MediatR;
+using Overseer.FluentExtensions.Error;
 using ValidationException = Overseer.WebAPI.Application.Common.Exceptions.ValidationException;
 
 namespace Overseer.WebAPI.Application.Common.Behaviours;
@@ -31,7 +32,7 @@ public class ValidationBehaviour<TRequest, TResponse>(IEnumerable<IValidator<TRe
 
         if (failures.Count != 0)
         {
-            return CreateFailureResult(Error.New(new ValidationException(failures)));
+            return CreateFailureResult(new ValidationException(failures));
         }
 
         return await next();
@@ -40,15 +41,15 @@ public class ValidationBehaviour<TRequest, TResponse>(IEnumerable<IValidator<TRe
     private static TResponse CreateFailureResult(Error error)
     {
         Type responseType = typeof(TResponse).GetGenericArguments()[0];
-        Type finType = typeof(Fin<>).MakeGenericType(responseType);
+        Type finType = typeof(Result<>).MakeGenericType(responseType);
         MethodInfo[] failMethods = finType.GetMethods(BindingFlags.Static | BindingFlags.Public)
-            .Where(static m => m.Name == "Fail" && m.GetParameters().Length == 1)
+            .Where(static m => m.Name == "Failure" && m.GetParameters().Length == 1)
             .ToArray();
 
         MethodInfo finFailMethod = failMethods
                                        .FirstOrDefault(static m =>
                                            m.GetParameters()[0].ParameterType == typeof(Error)) ??
-                                   throw new InvalidOperationException("Method 'Fail' not found on Fin<T>.");
+                                   throw new InvalidOperationException("Method 'Failure' not found on Result<T>.");
 
         object? result = finFailMethod.Invoke(null, [error]);
         return (TResponse)result!;

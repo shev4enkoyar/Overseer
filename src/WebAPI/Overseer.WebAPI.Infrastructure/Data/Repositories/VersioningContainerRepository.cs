@@ -1,4 +1,4 @@
-using LanguageExt;
+using Overseer.FluentExtensions.Result;
 using Overseer.WebAPI.Application.Common.Interfaces;
 using Overseer.WebAPI.Domain.Entities.VersioningContainers;
 
@@ -6,18 +6,18 @@ namespace Overseer.WebAPI.Infrastructure.Data.Repositories;
 
 public class VersioningContainerRepository(ApplicationDbContext dbContext) : IVersioningContainerRepository
 {
-    public async Task<Either<Exception, Unit>> CreateVersionAsync(VersioningContainerVersion version,
+    public async Task<Result> CreateVersionAsync(VersioningContainerVersion version,
         CancellationToken cancellationToken)
     {
         try
         {
             await dbContext.VersioningContainerVersions.AddAsync(version, cancellationToken);
             await dbContext.SaveChangesAsync(cancellationToken);
-            return Unit.Default;
+            return Result.Success();
         }
         catch (Exception e)
         {
-            return Either<Exception, Unit>.Left(e);
+            return Result.Failure(e);
         }
     }
 

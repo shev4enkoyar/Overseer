@@ -10,13 +10,13 @@ public record GetProjectQuery(Guid Id) : IQuery<ProjectDto>;
 internal sealed class GetProjectQueryHandler(IProjectRepository projectRepository)
     : IQueryHandler<GetProjectQuery, ProjectDto>
 {
-    public async Task<Fin<ProjectDto>> Handle(GetProjectQuery request, CancellationToken cancellationToken)
+    public async Task<Result<ProjectDto>> Handle(GetProjectQuery request, CancellationToken cancellationToken)
     {
         Option<Project> projectOption =
             await projectRepository.GetProjectWithoutTrackingAsync(request.Id, cancellationToken);
 
-        return projectOption.Match(
-            project => Fin<ProjectDto>.Succ(project.ToDto()),
-            () => Fin<ProjectDto>.Fail(Error.New(new NotFoundException(nameof(Project), request.Id))));
+        return projectOption.Map(
+            project => Result<ProjectDto>.Success(project.ToDto()),
+            () => Result<ProjectDto>.Failure(new NotFoundException(nameof(Project), request.Id)));
     }
 }

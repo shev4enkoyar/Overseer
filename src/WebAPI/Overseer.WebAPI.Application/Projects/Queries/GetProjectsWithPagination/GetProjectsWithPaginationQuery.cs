@@ -11,7 +11,7 @@ public record GetProjectsWithPaginationQuery(
 internal sealed class GetProjectsWithPaginationQueryHandler(IProjectRepository projectRepository)
     : IQueryHandler<GetProjectsWithPaginationQuery, PaginatedList<ProjectBriefDto>>
 {
-    public async Task<Fin<PaginatedList<ProjectBriefDto>>> Handle(GetProjectsWithPaginationQuery request,
+    public async Task<Result<PaginatedList<ProjectBriefDto>>> Handle(GetProjectsWithPaginationQuery request,
         CancellationToken cancellationToken) =>
         await projectRepository.GetProjectsWithPaginationAsync(
                 request.PageNumber, request.PageSize,

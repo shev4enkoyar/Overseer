@@ -9,19 +9,19 @@ public record ArchiveProjectCommand(Guid ProjectId) : ICommand;
 internal sealed class ArchiveProjectCommandHandler(IProjectRepository projectRepository, IUnitOfWork unitOfWork)
     : ICommandHandler<ArchiveProjectCommand>
 {
-    public async Task<Fin<Unit>> Handle(ArchiveProjectCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(ArchiveProjectCommand request, CancellationToken cancellationToken)
     {
         Option<Project> projectOption = await projectRepository.GetProjectAsync(request.ProjectId, cancellationToken);
 
-        return await projectOption.MatchAsync(
+        return await projectOption.MapAsync(
             async project =>
             {
                 project.Archive();
 
-                Fin<int> saveResult = await unitOfWork.TrySaveChangesAsync(cancellationToken);
+                Result<int> saveResult = await unitOfWork.TrySaveChangesAsync(cancellationToken);
 
-                return saveResult.Match(_ => Fin<Unit>.Succ(Unit.Default), Fin<Unit>.Fail);
+                return saveResult.Map(Result.Success, Result.Failure);
             },
-            () => Fin<Unit>.Fail(new NotFoundException(nameof(Project), request.ProjectId)));
+            () => Result.Failure(new NotFoundException(nameof(Project), request.ProjectId)));
     }
 }

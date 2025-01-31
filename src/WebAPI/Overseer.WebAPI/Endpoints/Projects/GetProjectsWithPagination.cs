@@ -1,6 +1,6 @@
 using System.ComponentModel;
-using LanguageExt;
 using MediatR;
+using Overseer.FluentExtensions.Result;
 using Overseer.WebAPI.Application.Projects.Queries.GetProjectsWithPagination;
 using Overseer.WebAPI.Domain.Abstractions;
 using Overseer.WebAPI.Infrastructure;
@@ -18,9 +18,9 @@ internal abstract class GetProjectsWithPagination : IEndpoint
                 [Description("The number of projects to include per page. Must be greater than or equal to 1.")]
                 int pageSize = 10) =>
             {
-                Fin<PaginatedList<ProjectBriefDto>> response =
+                Result<PaginatedList<ProjectBriefDto>> response =
                     await sender.Send(new GetProjectsWithPaginationQuery(pageNumber, pageSize));
-                return response.Match(Results.Ok, errorHandler.Handle);
+                return response.Map(Results.Ok, errorHandler.Handle);
             })
             .WithSummary("Get projects")
             .WithDescription(

@@ -9,6 +9,6 @@ public record UpdateContainerCommand(
 
 internal sealed class UpdateContainerCommandHandler : ICommandHandler<UpdateContainerCommand>
 {
-    public Task<Fin<Unit>> Handle(UpdateContainerCommand request, CancellationToken cancellationToken) =>
+    public Task<Result> Handle(UpdateContainerCommand request, CancellationToken cancellationToken) =>
         throw new NotImplementedException();
 }

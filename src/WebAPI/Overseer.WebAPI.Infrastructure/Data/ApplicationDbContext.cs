@@ -1,5 +1,7 @@
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
+using Overseer.FluentExtensions.Error;
+using Overseer.FluentExtensions.Result;
 using Overseer.WebAPI.Application.Common.Exceptions;
 using Overseer.WebAPI.Application.Common.Interfaces;
 using Overseer.WebAPI.Domain.Entities;
@@ -22,12 +24,17 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<VersioningContainerVersionTagValue> VersioningContainerVersionTagValues =>
         Set<VersioningContainerVersionTagValue>();
 
-    public async Task<Fin<int>> TrySaveChangesAsync(CancellationToken cancellationToken) =>
-        await TryAsync(async () => await SaveChangesAsync(cancellationToken))
-            .Match(
-                Fin<int>.Succ,
-                ex => Fin<int>.Fail(new DatabaseException("Error saving changes to the database", ex))
-            );
+    public async Task<Result<int>> TrySaveChangesAsync(CancellationToken cancellationToken)
+    {
+        try
+        {
+            return await SaveChangesAsync(cancellationToken);
+        }
+        catch (Exception e)
+        {
+            return Error.Create(new DatabaseException("Error saving changes to the database", e));
+        }
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

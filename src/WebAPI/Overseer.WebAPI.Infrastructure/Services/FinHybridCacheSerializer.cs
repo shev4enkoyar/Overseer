@@ -2,6 +2,7 @@ using System.Buffers;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.Caching.Hybrid;
+using Overseer.FluentExtensions.Result;
 
 namespace Overseer.WebAPI.Infrastructure.Services;
 
@@ -12,7 +13,7 @@ public class FinHybridCacheSerializer<T> : IHybridCacheSerializer<T>
     public FinHybridCacheSerializer()
     {
         Type finType = typeof(T);
-        if (finType.IsGenericType && finType.GetGenericTypeDefinition() == typeof(Fin<>))
+        if (finType.IsGenericType && finType.GetGenericTypeDefinition() == typeof(Result<>))
         {
             Type innerType = finType.GetGenericArguments()[0];
 
@@ -27,7 +28,7 @@ public class FinHybridCacheSerializer<T> : IHybridCacheSerializer<T>
         }
         else
         {
-            throw new InvalidOperationException($"{typeof(T)} не является типом Fin<A>.");
+            throw new InvalidOperationException($"{typeof(T)} не является типом Result<A>.");
         }
     }
 

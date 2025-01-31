@@ -4,7 +4,7 @@ namespace Overseer.WebAPI.Application.Common.Interfaces;
 
 public interface IVersioningContainerRepository
 {
-    public Task<Either<Exception, Unit>> CreateVersionAsync(VersioningContainerVersion version,
+    public Task<Result> CreateVersionAsync(VersioningContainerVersion version,
         CancellationToken cancellationToken);
 
     public Task UpdateVersionAsync(VersioningContainerVersion version, CancellationToken cancellationToken);

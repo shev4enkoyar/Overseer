@@ -281,6 +281,9 @@ dotnet_diagnostic.IDE0046.severity = none
 
 dotnet_diagnostic.IDE0005.severity = none
 
+# IDE0022: Use block body for method
+dotnet_diagnostic.IDE0022.severity = none
+
 # IDE0058: Disable enforced discard (_) for unused method results
 dotnet_diagnostic.IDE0058.severity = none
 
