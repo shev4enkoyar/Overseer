@@ -20,7 +20,7 @@ builder.Services.AddScoped<IApiErrorHandler, ApiErrorHandler>();
 
 builder.Services.AddProblemDetails();
 
-builder.Services.AddOpenApi("v1", options =>
+builder.Services.AddOpenApi("v1", static options =>
     options.AddDocumentTransformer<BearerSecuritySchemeTransformer>());
 
 builder.Services.AddAuthorization();
@@ -29,7 +29,7 @@ builder.Services.AddAuthentication()
     .AddKeycloakJwtBearer(
         "overseer-keycloak",
         "overseer",
-        options =>
+        static options =>
         {
             options.RequireHttpsMetadata = false;
             options.Audience = "account";
@@ -50,37 +50,17 @@ if (app.Environment.IsDevelopment())
 {
     await app.InitializeDatabaseAsync();
     app.MapOpenApi();
-    app.MapScalarApiReference(options =>
+    app.MapScalarApiReference(static options =>
         options.WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient)
             .WithModels(false)
             .WithClientButton(false)
             .WithTitle("Overseer")
             .WithTheme(ScalarTheme.DeepSpace)
-            .WithHttpBearerAuthentication(bearerOptions => bearerOptions.Token = string.Empty));
+            .WithHttpBearerAuthentication(static bearerOptions => bearerOptions.Token = string.Empty));
 }
 
-app.MapGet("/authentication/me", (ClaimsPrincipal claimsPrincipal) =>
-        claimsPrincipal.Claims.Select(x => $"{x.Type} : {x.Value}"))
-    .RequireAuthorization();
-
-string[] summaries =
-    ["Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"];
-
-app.MapGet("/weatherforecast", () =>
-    {
-        WeatherForecast[] forecast = Enumerable.Range(1, 5).Select(index =>
-                new WeatherForecast
-                (
-#pragma warning disable CA5394
-                    DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                    Random.Shared.Next(-20, 55),
-                    summaries[Random.Shared.Next(summaries.Length)]
-#pragma warning restore CA5394
-                ))
-            .ToArray();
-        return forecast;
-    })
-    .WithName("GetWeatherForecast")
+app.MapGet("/authentication/me", static (ClaimsPrincipal claimsPrincipal) =>
+        claimsPrincipal.Claims.Select(static x => $"{x.Type} : {x.Value}"))
     .RequireAuthorization();
 
 app.MapDefaultEndpoints();
@@ -92,10 +72,3 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 await app.RunAsync();
-
-#pragma warning disable S3903
-internal sealed record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-#pragma warning restore S3903
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
