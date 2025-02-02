@@ -1,5 +1,4 @@
 using System.Security.Claims;
-using Microsoft.IdentityModel.Tokens;
 using Overseer.WebAPI;
 using Overseer.WebAPI.Application;
 using Overseer.WebAPI.Endpoints;
@@ -12,35 +11,10 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.AddServiceDefaults();
 
 builder.Services.AddApplicationServices()
+    .AddWebServices(builder.Configuration)
     .AddInfrastructure(builder.Configuration);
 
 builder.AddRedisDistributedCache("overseer-redis-cache");
-
-builder.Services.AddScoped<IApiErrorHandler, ApiErrorHandler>();
-
-builder.Services.AddProblemDetails();
-
-builder.Services.AddOpenApi("v1", static options =>
-    options.AddDocumentTransformer<BearerSecuritySchemeTransformer>());
-
-builder.Services.AddAuthorization();
-
-builder.Services.AddAuthentication()
-    .AddKeycloakJwtBearer(
-        "overseer-keycloak",
-        "overseer",
-        static options =>
-        {
-            options.RequireHttpsMetadata = false;
-            options.Audience = "account";
-            options.MetadataAddress = "https+http://overseer-keycloak/realms/overseer/.well-known/openid-configuration";
-            options.TokenValidationParameters = new TokenValidationParameters
-            {
-                ValidIssuer = "https+http://overseer-keycloak/realms/overseer"
-            };
-        });
-
-builder.Services.AddAuthorizationBuilder();
 
 WebApplication app = builder.Build();
 
@@ -70,5 +44,7 @@ app.MapEndpoints();
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.UseRateLimiter();
 
 await app.RunAsync();
