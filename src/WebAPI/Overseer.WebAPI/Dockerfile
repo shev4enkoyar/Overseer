@@ -8,7 +8,6 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["src/WebAPI/Overseer.WebAPI/Overseer.WebAPI.csproj", "src/WebAPI/Overseer.WebAPI/"]
-COPY ["src/Overseer.ServiceDefaults/Overseer.ServiceDefaults.csproj", "src/Overseer.ServiceDefaults/"]
 COPY ["src/WebAPI/Overseer.WebAPI.Application/Overseer.WebAPI.Application.csproj", "src/WebAPI/Overseer.WebAPI.Application/"]
 COPY ["src/WebAPI/Overseer.WebAPI.Domain/Overseer.WebAPI.Domain.csproj", "src/WebAPI/Overseer.WebAPI.Domain/"]
 COPY ["src/Overseer.FluentExtensions/Overseer.FluentExtensions.csproj", "src/Overseer.FluentExtensions/"]

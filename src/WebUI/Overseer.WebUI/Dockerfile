@@ -8,7 +8,6 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["src/WebUI/Overseer.WebUI/Overseer.WebUI.csproj", "src/WebUI/Overseer.WebUI/"]
-COPY ["src/Overseer.ServiceDefaults/Overseer.ServiceDefaults.csproj", "src/Overseer.ServiceDefaults/"]
 RUN dotnet restore "src/WebUI/Overseer.WebUI/Overseer.WebUI.csproj"
 COPY . .
 WORKDIR "/src/src/WebUI/Overseer.WebUI"
