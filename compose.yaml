@@ -40,16 +40,19 @@
       context: .
       dockerfile: src/WebAPI/Overseer.WebAPI/Dockerfile
     environment:
+      - CONNECTIONSTRINGS__Database=Host=overseer.database;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD};Include Error Detail=true
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
-      - overseer.database
-      - reverse-proxy
+      overseer.database:
+        condition: service_healthy
+      reverse-proxy:
+        condition: service_started
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.webapi.rule=Host(`overseer.api.localhost`)"
+      - "traefik.http.routers.webapi.rule=Host(`${BACKEND_HOST}`)"
 
   overseer.webui:
     image: overseer.webui
@@ -60,24 +63,29 @@
       - reverse-proxy
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.webui.rule=Host(`overseer.ui.localhost`)"
+      - "traefik.http.routers.webui.rule=Host(`${FRONTEND_HOST}`)"
   
   overseer.database:
     image: postgres:latest
     container_name: overseer.database
     environment:
-      - POSTGRES_DB=overseer
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     volumes:
       - ./.containers/db:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   
   overseer.keycloak:
     image: quay.io/keycloak/keycloak:latest
     container_name: overseer.keycloak
-    command: 
+    command:
       - "start-dev"
       - "--import-realm"
     environment:
