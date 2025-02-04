@@ -8,13 +8,9 @@ using Scalar.AspNetCore;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-builder.AddServiceDefaults();
-
 builder.Services.AddApplicationServices()
     .AddWebServices(builder.Configuration)
     .AddInfrastructure(builder.Configuration);
-
-builder.AddRedisDistributedCache("overseer-redis-cache");
 
 WebApplication app = builder.Build();
 
@@ -36,8 +32,6 @@ if (app.Environment.IsDevelopment())
 app.MapGet("/authentication/me", static (ClaimsPrincipal claimsPrincipal) =>
         claimsPrincipal.Claims.Select(static x => $"{x.Type} : {x.Value}"))
     .RequireAuthorization();
-
-app.MapDefaultEndpoints();
 
 app.MapEndpoints();
 

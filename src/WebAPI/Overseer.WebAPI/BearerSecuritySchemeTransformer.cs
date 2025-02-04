@@ -30,7 +30,17 @@ internal sealed class BearerSecuritySchemeTransformer(IAuthenticationSchemeProvi
                 Version = "v1",
                 Description = "A simple web API for managing projects."
             };
-            document.Servers.Add(new OpenApiServer { Url = "http://localhost:5448" });
+            document.Servers =
+            [
+                new OpenApiServer
+                {
+                    Url = "http://overseer.api.localhost"
+                },
+                new OpenApiServer
+                {
+                    Url = "https://overseer.api.localhost"
+                }
+            ];
             document.Components ??= new OpenApiComponents();
             document.Components.SecuritySchemes = requirements;
 

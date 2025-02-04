@@ -16,4 +16,14 @@ public class Container : BaseEntity<Guid>
     public ContainerType Type { get; set; }
 
     public Guid TypedContainerId { get; set; }
+
+    public static Container Create(Guid projectId, string name, ContainerType containerType,
+        string? description = null) =>
+        new()
+        {
+            ProjectId = projectId,
+            Name = name,
+            Description = description,
+            Type = containerType
+        };
 }

@@ -1,0 +1,99 @@
+﻿services:
+  reverse-proxy:
+    image: traefik:v3.2
+    command:
+      - "--api.insecure=false"
+      - "--api.dashboard=true"
+      - "--providers.docker"
+      - "--log.level=DEBUG"
+      - "--providers.docker.exposedByDefault=false"
+      - "--providers.docker.network=proxynet"
+      #Entrypoints:
+      - "--entrypoints.http.address=:80"
+      - "--entrypoints.https.address=:443"
+      #Refirect to https
+      #      - "--entrypoints.http.http.redirections.entrypoint.to.https"
+      #      - "--entrypoints.http.http.redirections.entrypoint.scheme.https"
+      #SSL Let's Encrypt:
+      - "--entrypoints.https.http.tls.certResolver=le"
+      - "--certificatesresolvers.le.acme.tlschallenge=true"
+      - "--certificatesresolvers.le.acme.email=tester@shevchenko.ru"
+      - "--certificatesresolvers.le.acme.storage=/letsencrypt/acme.json"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dashboard.rule=Host(`traefik.dashboard.localhost`)"
+      - "traefik.http.routers.dashboard.entrypoints=https"
+      - "traefik.http.routers.dashboard.service=api@internal"
+      - "traefik.http.routers.dashboard.middlewares=auth"
+      - "traefik.http.middlewares.auth.basicauth.users=admin:$$apr1$$Htffi55j$$BZUpv/5d42IwxVDCPPRp71"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./.containers/letsencrypt:/letsencrypt
+  
+  overseer.webapi:
+    user: root
+    image: overseer.webapi
+    build:
+      context: .
+      dockerfile: src/WebAPI/Overseer.WebAPI/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - overseer.database
+      - reverse-proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.webapi.rule=Host(`overseer.api.localhost`)"
+
+  overseer.webui:
+    image: overseer.webui
+    build:
+      context: .
+      dockerfile: src/WebUI/Overseer.WebUI/Dockerfile
+    depends_on:
+      - reverse-proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.webui.rule=Host(`overseer.ui.localhost`)"
+  
+  overseer.database:
+    image: postgres:latest
+    container_name: overseer.database
+    environment:
+      - POSTGRES_DB=overseer
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./.containers/db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+  
+  overseer.keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: overseer.keycloak
+    command: 
+      - "start-dev"
+      - "--import-realm"
+    environment:
+      - KC_HEALTH_ENABLED=true
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+    volumes:
+      - ./.containers/identity:/opt/keycloak/data
+      - ./imports:/opt/keycloak/data/import
+    ports:
+      - 18080:8080
+  
+  overseer.redis:
+    image: redis:latest
+    container_name: overseer.redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./.containers/redis:/data

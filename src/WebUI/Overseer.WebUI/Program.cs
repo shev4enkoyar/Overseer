@@ -5,7 +5,6 @@ using Overseer.WebUI.Components;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-builder.AddServiceDefaults();
 builder.Services.AddMudServices();
 builder.Services.AddMudTranslations();
 
@@ -34,7 +33,5 @@ app.MapStaticAssets();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
-
-app.MapDefaultEndpoints();
 
 await app.RunAsync();

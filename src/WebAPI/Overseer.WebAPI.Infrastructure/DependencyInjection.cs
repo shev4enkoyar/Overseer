@@ -15,6 +15,10 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddScoped<IDockerClientManager, DockerClientManager>();
+        services.AddScoped<IMinIoManager, MinIoManager>(sp =>
+            new MinIoManager(sp.GetRequiredService<IDockerClientManager>()));
+
         string? databaseConnectionString = configuration["ConnectionStings:Database"];
 
 #pragma warning disable EXTEXP0018
@@ -34,6 +38,7 @@ public static class DependencyInjection
 
         services.AddScoped<IVersioningContainerRepository, VersioningContainerRepository>();
         services.AddScoped<IProjectRepository, ProjectRepository>();
+        services.AddScoped<IContainerRepository, ContainerRepository>();
 
         services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<ApplicationDbContext>());
 

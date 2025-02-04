@@ -6,7 +6,7 @@ internal sealed class RateLimiterSettings
 
     internal const string ConfigurationSectionName = "RateLimiter";
 
-    internal int TokenLimit { get; set; }
-    internal int TokensPerPeriod { get; set; }
-    internal int ReplenishmentPeriodSeconds { get; set; }
+    public int TokenLimit { get; set; }
+    public int TokensPerPeriod { get; set; }
+    public int ReplenishmentPeriodSeconds { get; set; }
 }

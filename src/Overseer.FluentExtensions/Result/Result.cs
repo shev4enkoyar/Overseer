@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
 
 namespace Overseer.FluentExtensions.Result;
 
@@ -65,9 +66,13 @@ public struct Result<T> : IResult<T>, IEquatable<Result<T>>
         IsSuccessful = false;
     }
 
-    [JsonPropertyName("isSuccessful")] public bool IsSuccessful { get; }
+    [JsonPropertyName("isSuccessful")]
+    [MemberNotNullWhen(true, nameof(Value))]
+    public bool IsSuccessful { get; }
 
-    [JsonIgnore] public readonly bool IsFailure => !IsSuccessful;
+    [JsonIgnore]
+    [MemberNotNullWhen(false, nameof(Value))]
+    public readonly bool IsFailure => !IsSuccessful;
 
     [JsonPropertyName("error")] public Error.Error Error { get; }
 

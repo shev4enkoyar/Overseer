@@ -6,7 +6,7 @@ public readonly struct Option<T> : IOption<T>, IEquatable<Option<T>>
 {
     private Option(T? value)
     {
-        Value = value;
+        Value = value!;
         if (Equals(value, default(T)))
         {
             IsSome = false;
@@ -21,7 +21,7 @@ public readonly struct Option<T> : IOption<T>, IEquatable<Option<T>>
     public bool IsNone => !IsSome;
 
     [MemberNotNullWhen(true, nameof(IsSome))]
-    public T? Value { get; }
+    public T Value { get; }
 
     public bool Equals(Option<T> other) =>
         IsSome == other.IsSome && EqualityComparer<T>.Default.Equals(Value, other.Value);
