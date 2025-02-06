@@ -59,6 +59,8 @@
     build:
       context: .
       dockerfile: src/WebUI/Overseer.WebUI/Dockerfile
+    environment:
+      - OverseerApi__BaseUri=http://overseer.webapi
     depends_on:
       - reverse-proxy
     labels:

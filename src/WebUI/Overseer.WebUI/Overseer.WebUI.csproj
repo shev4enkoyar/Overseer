@@ -5,6 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="CodeBeam.MudBlazor.Extensions"/>
         <PackageReference Include="MudBlazor"/>
         <PackageReference Include="MudBlazor.Translations"/>
     </ItemGroup>

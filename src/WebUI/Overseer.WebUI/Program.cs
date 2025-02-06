@@ -1,19 +1,29 @@
 using MudBlazor.Services;
 using MudBlazor.Translations;
+using MudExtensions.Services;
 using Overseer.WebUI;
 using Overseer.WebUI.Components;
+using Overseer.WebUI.Services;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddMudServices();
 builder.Services.AddMudTranslations();
+builder.Services.AddMudExtensions();
 
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-const string webApiAddress = "https+http://overseer-web-api";
+builder.Services.AddTransient<NavigationService>();
+
+const string webApiAddress = "http://overseer.webapi:8080/api/";
+
 builder.Services.AddHttpClient<WeatherApiClient>(static client =>
     client.BaseAddress = new Uri(webApiAddress));
+
+builder.Services.AddHttpClient<OverseerApiClient>(static client =>
+    client.BaseAddress = new Uri(webApiAddress));
+
 
 WebApplication app = builder.Build();
 
